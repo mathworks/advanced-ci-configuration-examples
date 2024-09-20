@@ -1,0 +1,51 @@
+name: Build and Deploy MATLAB standalone applications
+ 
+on:
+  push:
+    branches: [ integrateGenerateExecutable ]
+ 
+  workflow_dispatch:
+ 
+# Utilizes repository-stored secrets for MATLAB's batch-token licensing
+env:
+  MLM_LICENSE_TOKEN: ${{ secrets.MLM_LICENSE_TOKEN }}
+ 
+jobs:
+  # This workflow contains a single job called "build-and-upload"
+  build-and-upload:
+     
+    # A job will run for all combinations of OS and release present in the matrix
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, windows-2022, macos-12]
+        release: [R2023a, R2023b]
+ 
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+ 
+    steps:
+      - uses: actions/checkout@v3
+       
+      # Sets up MATLAB on the GitHub Actions runner using setup-matlab@v2 and download MATLAB_Compiler_SDK
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2
+        with:
+          release: ${{ matrix.release }}
+          products: MATLAB_Compiler_SDK
+ 
+      # Compiles MATLAB function for deployment
+      - name: Compile
+        uses: matlab-actions/run-command@v2
+        with:
+          command: |
+            mex src/arrayProduct.c
+            addpath(pwd)
+            run("src/KgToPounds.m")
+            compiler.build.standaloneApplication("src/KgToPounds.m");
+ 
+      # Uploads the generated executable as an artifact to GitHub
+      - name: Upload generated binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: KgToPounds-${{ matrix.release }}-${{ matrix.os }}
+          path: KgToPounds*

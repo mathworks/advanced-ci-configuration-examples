@@ -1,0 +1,59 @@
+version: 2.1
+orbs:
+  matlab: mathworks/matlab@1.3.0
+  gh: circleci/github-cli@2.3.0
+
+executors:
+  linux: # a Linux VM running Ubuntu 20.04
+    machine:
+      image: default
+  macos: # macOS executor running Xcode
+    macos:
+      xcode: 14.2.0
+  windows:
+    resource_class: "windows.medium"
+    machine:
+      image: 'windows-server-2022-gui:current'
+
+jobs:
+  compile-and-test-mex:
+    parameters:
+      os:
+        type: executor
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      - matlab/install
+      - matlab/run-build:
+          tasks: mex test
+      - store_artifacts:
+          path: test-results/results.xml
+      - persist_to_workspace:
+          root: .
+          paths:
+            - toolbox/*.mex*
+
+  create-and-release-toolbox:
+    machine:
+      image: ubuntu-2204:2024.01.1
+    steps:
+      - checkout
+      - matlab/install
+      - attach_workspace:
+          at: .
+      - matlab/run-build:
+          tasks: packageToolbox
+      - gh/install
+      - run: |
+          gh release create <<pipeline.id>> toolbox.mltbx --title "Cross-Platform Array Product Toolbox" --notes "Cross-Platform Array Product Toolbox" --repo <<pipeline.project.git_url>>
+
+workflows:
+  toolbox-create-package-release:
+    jobs:
+      - compile-and-test-mex:
+          matrix:
+            parameters:
+              os: [linux, macos, windows]
+      - create-and-release-toolbox:
+          requires:
+            - compile-and-test-mex

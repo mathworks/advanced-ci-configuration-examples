@@ -1,0 +1,37 @@
+pipeline {
+    agent none
+    stages {
+        stage('Build and Deploy MATLAB standalone applications') {
+            matrix {
+                axes {
+                    axis {
+                        name 'OS'
+                        values 'linux', 'windows', 'macos'
+                    }
+                    axis {
+                        name 'RELEASE'
+                        values 'R2023a', 'R2023b'
+                    }
+                }
+                stages {
+                    stage("Build and deploy") {
+                        agent { label "${OS}" } // Assumes you have labels corresponding to the OS types
+                        tools {
+                            matlab "${RELEASE}"
+                        }
+                        steps {
+                            script {
+                                runMATLABCommand(command: 'mex src/arrayProduct.c, addpath(pwd), run("src/KgToPounds.m"), compiler.build.standaloneApplication("src/KgToPounds.m");')
+                            }
+                        }
+                        post {
+                            always {
+                                archiveArtifacts artifacts: 'KgToPounds*'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}

@@ -1,0 +1,47 @@
+jobs:
+  - job: build_and_deploy_MATLAB_standalone_applications
+    strategy:
+      matrix:
+        linux-R2023a:
+          imageName: ubuntu-latest
+          release: R2023a
+        linux-R2023b:
+          imageName: ubuntu-latest
+          release: R2023b
+        mac-R2023a:
+          imageName: macOS-latest
+          release: R2023a
+        mac-R2023b:
+          imageName: macOS-latest
+          release: R2023b
+        windows-R2023a:
+          imageName: windows-latest
+          release: R2023a
+        windows-R2023b:
+          imageName: windows-latest
+          release: R2023b
+    pool:
+      vmImage: $(imageName)
+    steps:
+      
+      - task: InstallMATLAB@1
+        inputs:
+          release: '$(release)'
+          products: 'MATLAB_Compiler_SDK'
+      - task: RunMATLABCommand@1
+        inputs:
+          command: |
+            mex src/arrayProduct.c
+            addpath(pwd)
+            run("src/KgToPounds.m")
+            compiler.build.standaloneApplication("src/KgToPounds.m","OutputDir","executable");
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: 'executable'
+          ArtifactName: 'KgToPounds-$(release)-$(imageName)'
+          publishLocation: Container
+        
+
+      

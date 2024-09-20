@@ -1,0 +1,75 @@
+name: Compile, Test and Release toolbox
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  # This workflow contains two jobs called "compile-and-test-mex" and "create-and-release-toolbox"
+  compile-and-test-mex:
+    # A job will run for all the OS present in the matrix
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Sets up MATLAB on the GitHub Actions runner
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2
+
+      # Runs build to create MEX file and then run tests
+      - name: Run build
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: mex test
+
+      # Uploads the test results and MEX files to GitHub
+      - name: Upload test results          
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results-${{ matrix.os }}
+          path: test-results/results.xml
+
+      - name: Upload mex file
+        uses: actions/upload-artifact@v3
+        with:
+          name: mex-${{ matrix.os }}
+          path: toolbox/**/*.mex*
+          
+  create-and-release-toolbox:
+    # This job executes only after a successful completion of 'compile-and-test-mex' job
+    needs: compile-and-test-mex
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Sets up MATLAB on the GitHub Actions runner
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2
+
+      # Downloads all mex files uploaded to GitHub in the previous job
+      - name: Download mex files
+        uses: actions/download-artifact@v3
+        with: 
+          path: toolbox    
+          pattern: mex-*
+          merge-multiple: true
+        
+      # Packages all files in toolbox folder into a mltbx toolbox package  
+      - name: Run build
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: packageToolbox
+
+      # The packaged toolbox is distributed as a GitHub release
+      - name: Create relase and upload asset
+        run: |
+          gh release create ${{github.run_id}} --title "Cross-Platform Array Product Toolbox" toolbox.mltbx
+        env:
+          GH_TOKEN: ${{ github.token }}
