@@ -14,27 +14,27 @@ For starter workflows, use the [`ci-configuration-examples`](https://github.com/
 
 # Workflows
 
-The repository includes these 2 workflows— 
+The repository contains examples for packaging and distributing a toolbox, as well as building and deploying a standalone application.
 
-- **Package and Distribute Toolbox**: Compile, link, and test your C source files across multiple operating systems to produce a binary MEX file in a single job execution. Bundle the resulting binaries into a toolbox and distribute it as a GitHub release.
-
-    To access the configuration files for this workflow, follow the links in this table.
-    | **Platform**                        | **File Path**                                                                                                                                       |
-    |--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `Azure DevOps`| [AzureDevOps/ToolboxDistribution.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ToolboxDistribution.yml) |
-    | `CircleCI`| [.circleci/ToolboxDistribution.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/ToolboxDistribution.yml) |
-    | `GitHub Actions`| [.github/workflows/ToolboxDistribution.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/ToolboxDistribution.yml) |
-    | `Jenkins` | [Jenkins/ToolboxDistribution.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
-
-- **Build and Deploy Standalone Application**: Automate the building and deployment of MATLAB standalone applications across multiple operating systems and multiple MATLAB releases, by compiling MATLAB functions using the MATLAB Compiler SDK&trade;. Store the compiled standalones as artifacts, ensuring compatibility and efficiency in generating deployable applications.
+- **Package and Distribute Toolbox**: Using a matrix build across multiple platforms, compile, link, and test your C source files to produce a binary MEX file per operating system. Then, bundle the resulting binaries into a toolbox and distribute it as a GitHub release.
 
     To access the configuration files for this workflow, follow the links in this table.
     | **Platform**                        | **File Path**                                                                                                                                       |
     |--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-    | `Azure DevOps`| [AzureDevOps/CrossPlatformBuilder.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/CrossPlatformBuilder.yml) |
-    | `CircleCI`| [.circleci/CrossPlatformBuilder.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/CrossPlatformBuilder.yml) |
-    | `GitHub Actions`| [.github/workflows/CrossPlatformBuilder.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/CrossPlatformBuilder.yml) |
-    | `Jenkins` | [Jenkins/CrossPlatformBuilder.yml](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/CrossPlatformBuilder.yml) |
+    | Azure DevOps| [`AzureDevOps/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ToolboxDistribution.yml) |
+    | CircleCI| [`.circleci/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/ToolboxDistribution.yml) |
+    | GitHub Actions| [`.github/workflows/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/ToolboxDistribution.yml) |
+    | `Jenkins | [`Jenkins/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
+
+- **Build and Deploy Standalone Applications**: Using a matrix build across multiple platforms and MATLAB releases, build standalone applications by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;). Then, deploy the generated applications as artifacts.
+
+    To access the configuration files for this workflow, follow the links in this table.
+    | **Platform**                        | **File Path**                                                                                                                                       |
+    |--------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | Azure DevOps| [`AzureDevOps/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/CrossPlatformBuilder.yml) |
+    | CircleCI| [`.circleci/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/CrossPlatformBuilder.yml) |
+    | GitHub Actions| [`.github/workflows/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/CrossPlatformBuilder.yml) |
+    | Jenkins | [`Jenkins/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/CrossPlatformBuilder.yml) |
 
 <br>
 
@@ -43,7 +43,7 @@ The repository includes these 2 workflows—
 Here's how to quickly get this repository running on a CI system:
 1. Fork the repository to your own GitHub account.
 2. Go to one of the supported CI platforms and install the available CI integration for MATLAB. (GitHub Actions does not require this step.)
-3. Create a new CI job using your forked repository. To ensure your configuration file is recognized by the CI platform, you need to specify which file to use based on the workflow you intend to run.
+3. Create a new CI job using your forked repository. You need to specify which file to use based on the workflow you intend to run.
 4. Enjoy using MATLAB with CI!
 
 That's really it!
@@ -53,7 +53,7 @@ That's really it!
 ## Licensing
 Product licensing for your workflow depends on your project visibility as well as the type of products to install:
 
-- Public project — If your workflow does not include transformation products, such as MATLAB Coder and MATLAB Compiler, then MathWorks<sup>&reg;</sup> automatically licenses any products that you install. If your workflow includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
+- Public project — If your workflow does not include transformation products, such as MATLAB Coder&trade; and MATLAB Compiler, then MathWorks<sup>&reg;</sup> automatically licenses any products that you install. If your workflow includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
 - Private project — MathWorks does not automatically license any products for you. You can request a batch licensing token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
 
 <br>
