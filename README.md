@@ -14,7 +14,7 @@ For starter workflows, use the [`ci-configuration-examples`](https://github.com/
 
 # Workflows
 
-The repository contains examples for packaging and distributing a toolbox, as well as building and deploying a standalone application.
+The repository contains examples for packaging and distributing a toolbox, as well as building and deploying standalone applications.
 
 - **Package and Distribute Toolbox**: Using a matrix build across multiple platforms, compile, link, and test your C source files to produce a binary MEX file per operating system. Then, bundle the resulting binaries into a toolbox and distribute it as a GitHub release.
 
@@ -24,9 +24,9 @@ The repository contains examples for packaging and distributing a toolbox, as we
     | Azure DevOps| [`AzureDevOps/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ToolboxDistribution.yml) |
     | CircleCI| [`.circleci/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/ToolboxDistribution.yml) |
     | GitHub Actions| [`.github/workflows/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/ToolboxDistribution.yml) |
-    | `Jenkins | [`Jenkins/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
+    | Jenkins | [`Jenkins/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
 
-- **Build and Deploy Standalone Applications**: Using a matrix build across multiple platforms and MATLAB releases, build standalone applications by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;). Then, deploy the generated applications as artifacts.
+- **Build and Deploy Standalone Applications**: Using a matrix build across multiple platforms and MATLAB releases, build standalone applications by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;) and deploy the resulting applications as artifacts.
 
     To access the configuration files for this workflow, follow the links in this table.
     | **Platform**                        | **File Path**                                                                                                                                       |
