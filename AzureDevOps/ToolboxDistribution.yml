@@ -24,7 +24,7 @@ jobs:
           SourceFolder: 'toolbox'
           Contents: '**/*.mex*'
           TargetFolder: toolbox/tmpMexFolder
-      - publish: 'toolbox/tmpMexFolder' # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/publish-pipeline-artifact-v1?view=azure-pipelines#inputs
+      - publish: 'toolbox/tmpMexFolder'
         artifact: mex-$(imageName)
 
   - job: create_and_release_toolbox
@@ -35,8 +35,8 @@ jobs:
       - task: DownloadPipelineArtifact@2
         inputs:
           itemPattern: 'mex-*/*'
-          targetPath: 'tmpMexFolder' # https://github.com/Microsoft/azure-pipelines-tasks/issues/6739
-      - task: CopyFiles@2 # Copy mex assets to correct folder 
+          targetPath: 'tmpMexFolder'
+      - task: CopyFiles@2
         inputs:
           SourceFolder: 'tmpMexFolder'
           Contents: '**/*.mex*'
@@ -48,10 +48,8 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
           
-        # https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/reference/github-release-v1
       - task: GitHubRelease@1
         inputs:
-          # Specifies the name of the GitHub service connection to use to connect to the GitHub repository (OAuth or PAT)
           gitHubConnection: tsharmaMW
           title: "Cross-Platform Array Product Toolbox"
           assets: 'toolbox.mltbx'

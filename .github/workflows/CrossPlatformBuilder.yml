@@ -1,8 +1,8 @@
-name: Build and Deploy MATLAB standalone applications
+name: Build and Deploy Python Package
  
 on:
   push:
-    branches: [ integrateGenerateExecutable ]
+    branches: [ main ]
  
   workflow_dispatch:
  
@@ -11,41 +11,56 @@ env:
   MLM_LICENSE_TOKEN: ${{ secrets.MLM_LICENSE_TOKEN }}
  
 jobs:
-  # This workflow contains a single job called "build-and-upload"
-  build-and-upload:
+  # This workflow contains a single job called "build-and-deploy"
+  build-and-deploy:
      
     # A job will run for all combinations of OS and release present in the matrix
     strategy:
       matrix:
-        os: [ubuntu-20.04, windows-2022, macos-12]
-        release: [R2023a, R2023b]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        release: [R2024a, R2024b]
  
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
  
     steps:
       - uses: actions/checkout@v3
-       
+
       # Sets up MATLAB on the GitHub Actions runner using setup-matlab@v2 and download MATLAB_Compiler_SDK
       - name: Setup MATLAB
-        uses: matlab-actions/setup-matlab@v2
+        id: setup-matlab
+        uses: matlab-actions/setup-matlab@v2.4.0
         with:
           release: ${{ matrix.release }}
-          products: MATLAB_Compiler_SDK
+          products: >
+            MATLAB_Compiler_SDK
+            MATLAB_Test
+
+      # Installs Python and add it to the Path
+      - name: Setup Python
+        uses: actions/setup-python@v5 
+        with:
+          python-version: '3.11'
  
       # Compiles MATLAB function for deployment
       - name: Compile
         uses: matlab-actions/run-command@v2
         with:
           command: |
-            mex src/arrayProduct.c
-            addpath(pwd)
-            run("src/KgToPounds.m")
-            compiler.build.standaloneApplication("src/KgToPounds.m");
- 
+            mex src/arrayProduct.c;
+            addpath(genpath(pwd));
+            buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");
+            save("pythonBuild.mat","buildResults");
+
+      - name: Run equivalence tests
+        uses: matlab-actions/run-tests@v2
+        with:
+          select-by-tag: EquivalenceTest
+          source-folder: ../
+
       # Uploads the generated executable as an artifact to GitHub
       - name: Upload generated binary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: KgToPounds-${{ matrix.release }}-${{ matrix.os }}
           path: KgToPounds*

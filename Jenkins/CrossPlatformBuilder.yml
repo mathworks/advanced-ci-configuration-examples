@@ -1,7 +1,7 @@
 pipeline {
     agent none
     stages {
-        stage('Build and Deploy MATLAB standalone applications') {
+        stage('Build and Deploy Python Package') {
             matrix {
                 axes {
                     axis {
@@ -10,7 +10,7 @@ pipeline {
                     }
                     axis {
                         name 'RELEASE'
-                        values 'R2023a', 'R2023b'
+                        values 'R2024a', 'R2024b'
                     }
                 }
                 stages {
@@ -21,12 +21,13 @@ pipeline {
                         }
                         steps {
                             script {
-                                runMATLABCommand(command: 'mex src/arrayProduct.c, addpath(pwd), run("src/KgToPounds.m"), compiler.build.standaloneApplication("src/KgToPounds.m");')
+                                runMATLABCommand(command: 'mex src/arrayProduct.c;, addpath(genpath(pwd));, buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");, save("pythonBuild.mat","buildResults");');
+                                runMATLABTests(selectByTag: 'EquivalenceTest', sourceFolder: ['../']);
                             }
                         }
                         post {
                             always {
-                                archiveArtifacts artifacts: 'KgToPounds*'
+                                archiveArtifacts artifacts: 'KgToPoundsPythonBuild/*'
                             }
                         }
                     }

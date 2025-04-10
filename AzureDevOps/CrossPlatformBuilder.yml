@@ -1,45 +1,46 @@
 jobs:
-  - job: build_and_deploy_MATLAB_standalone_applications
+  - job: build_and_deploy_python_package
     strategy:
       matrix:
-        linux-R2023a:
+        linux-R2024a:
           imageName: ubuntu-latest
-          release: R2023a
-        linux-R2023b:
+          release: R2024a
+        linux-R2024b:
           imageName: ubuntu-latest
-          release: R2023b
-        mac-R2023a:
+          release: R2024b
+        mac-R2024a:
           imageName: macOS-latest
-          release: R2023a
-        mac-R2023b:
+          release: R2024a
+        mac-R2024b:
           imageName: macOS-latest
-          release: R2023b
-        windows-R2023a:
+          release: R2024b
+        windows-R2024a:
           imageName: windows-latest
-          release: R2023a
-        windows-R2023b:
+          release: R2024a 
+        windows-R2024b:
           imageName: windows-latest
-          release: R2023b
+          release: R2024b
     pool:
       vmImage: $(imageName)
     steps:
-      
       - task: InstallMATLAB@1
         inputs:
           release: '$(release)'
-          products: 'MATLAB_Compiler_SDK'
+          products: 'MATLAB_Compiler_SDK MATLAB_Test'
       - task: RunMATLABCommand@1
         inputs:
           command: |
             mex src/arrayProduct.c
-            addpath(pwd)
-            run("src/KgToPounds.m")
-            compiler.build.standaloneApplication("src/KgToPounds.m","OutputDir","executable");
+            addpath(genpath(pwd));
+            buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");
+            save("pythonBuild.mat","buildResults");
+            results = runtests("tests/KgToPoundsEquivalenceTest.m");
+            assertSuccess(results);
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: 'executable'
+          PathtoPublish: 'KgToPoundsPythonBuild'
           ArtifactName: 'KgToPounds-$(release)-$(imageName)'
           publishLocation: Container
         

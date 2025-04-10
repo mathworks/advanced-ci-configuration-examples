@@ -26,7 +26,7 @@ The repository contains examples for packaging and distributing a toolbox, as we
     | GitHub Actions| [`.github/workflows/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/ToolboxDistribution.yml) |
     | Jenkins | [`Jenkins/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
 
-- **Build and Deploy Standalone Applications**: Using a matrix build across multiple platforms and MATLAB releases, build standalone applications by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;) and deploy the resulting applications as artifacts.
+- **Build and Deploy Python<sup>&reg;</sup> Packages**: Using a matrix build across multiple platforms and MATLAB releases, build python packages by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;) and deploy the resulting packages as artifacts.
 
     To access the configuration files for this workflow, follow the links in this table.
     | **Platform**                        | **File Path**                                                                                                                                       |

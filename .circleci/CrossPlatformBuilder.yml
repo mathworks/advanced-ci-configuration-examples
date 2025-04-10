@@ -1,12 +1,11 @@
 version: 2.1
 orbs:
-  matlab: mathworks/matlab@1.3.0
-
+  matlab: mathworks/matlab@1.7.0
 executors:
-  linux: # a Linux VM running Ubuntu 20.04
+  linux:
     machine:
       image: default
-  macos: # macOS executor running Xcode
+  macos:
     macos:
       xcode: 14.2.0
   windows:
@@ -27,24 +26,27 @@ jobs:
 
       - matlab/install:
           release: << parameters.release >>
-          products: MATLAB_Compiler_SDK
-          
-      # Compiles MATLAB function for deployment
+          products: >
+            MATLAB_Compiler_SDK
+            MATLAB_Test
+
       - matlab/run-command:
           command: |
-            mex src/arrayProduct.c
-            addpath(pwd)
-            run("src/KgToPounds.m")
-            compiler.build.standaloneApplication("src/KgToPounds.m","OutputDir","executable");
+            mex src/arrayProduct.c;
+            addpath(genpath(pwd));
+            buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");
+            save("pythonBuild.mat","buildResults");
+            results = runtests("tests/KgToPoundsEquivalenceTest.m");
+            assertSuccess(results);
 
       - store_artifacts:
-          path: executable
+          path: KgToPoundsPythonBuild
 
 workflows:
-  build_and_deploy_MATLAB_standalone_applications:
+  build_and_deploy_python_package:
     jobs:
       - build_and_deploy:
           matrix:
             parameters:
               os: [linux, macos, windows]
-              release: ["R2023a", "R2023b"] 
+              release: ["R2024a", "R2024b"] 

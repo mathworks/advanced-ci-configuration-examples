@@ -4,10 +4,10 @@ orbs:
   gh: circleci/github-cli@2.3.0
 
 executors:
-  linux: # a Linux VM running Ubuntu 20.04
+  linux:
     machine:
       image: default
-  macos: # macOS executor running Xcode
+  macos:
     macos:
       xcode: 14.2.0
   windows:
