@@ -1,20 +1,19 @@
 version: 2.1
 orbs:
-  matlab: mathworks/matlab@1.7.0
+  matlab: mathworks/matlab@1
+  win: circleci/windows@5.0
 executors:
   linux:
     machine:
       image: default
   macos:
     macos:
-      xcode: 14.2.0
+      xcode: 15.4.0
   windows:
-    resource_class: "windows.medium"
-    machine:
-      image: 'windows-server-2022-gui:current'
+    win/default
 
 jobs:
-  build_and_deploy:
+  build-and-deploy:
     parameters:
       os:
         type: executor
@@ -23,13 +22,11 @@ jobs:
     executor: << parameters.os >>
     steps:
       - checkout
-
       - matlab/install:
           release: << parameters.release >>
           products: >
             MATLAB_Compiler_SDK
             MATLAB_Test
-
       - matlab/run-command:
           command: |
             mex src/arrayProduct.c;
@@ -43,9 +40,9 @@ jobs:
           path: KgToPoundsPythonBuild
 
 workflows:
-  build_and_deploy_python_package:
+  build-and-deploy-python-package:
     jobs:
-      - build_and_deploy:
+      - build-and-deploy:
           matrix:
             parameters:
               os: [linux, macos, windows]

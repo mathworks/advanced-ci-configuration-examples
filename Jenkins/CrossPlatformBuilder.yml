@@ -21,8 +21,7 @@ pipeline {
                         }
                         steps {
                             script {
-                                runMATLABCommand(command: 'mex src/arrayProduct.c;, addpath(genpath(pwd));, buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");, save("pythonBuild.mat","buildResults");');
-                                runMATLABTests(selectByTag: 'EquivalenceTest', sourceFolder: ['../']);
+                                runMATLABCommand(command: 'mex src/arrayProduct.c;, addpath(genpath(pwd));, buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");, save("pythonBuild.mat","buildResults");, results = runtests("tests/KgToPoundsEquivalenceTest.m");,  assertSuccess(results);');
                             }
                         }
                         post {

@@ -1,7 +1,8 @@
 version: 2.1
 orbs:
-  matlab: mathworks/matlab@1.3.0
+  matlab: mathworks/matlab@1
   gh: circleci/github-cli@2.3.0
+  win: circleci/windows@5.0
 
 executors:
   linux:
@@ -9,11 +10,9 @@ executors:
       image: default
   macos:
     macos:
-      xcode: 14.2.0
+      xcode: 15.4.0
   windows:
-    resource_class: "windows.medium"
-    machine:
-      image: 'windows-server-2022-gui:current'
+    win/default
 
 jobs:
   compile-and-test-mex:

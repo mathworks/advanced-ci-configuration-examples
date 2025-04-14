@@ -1,5 +1,5 @@
 jobs:
-  - job: build_and_deploy_python_package
+  - job: BuildAndDeployPythonPackage
     strategy:
       matrix:
         linux-R2024a:
