@@ -34,7 +34,7 @@ jobs:
 
   create-and-release-toolbox:
     machine:
-      image: ubuntu-2204:2024.01.1
+      image: default
     steps:
       - checkout
       - matlab/install
@@ -43,8 +43,9 @@ jobs:
       - matlab/run-build:
           tasks: packageToolbox
       - gh/install
-      - run: |
-          gh release create <<pipeline.id>> toolbox.mltbx --title "Cross-Platform Array Product Toolbox" --notes "Cross-Platform Array Product Toolbox" --repo <<pipeline.project.git_url>>
+      - run:
+          name: Create a Github Release for the Toolbox
+          command: gh release create <<pipeline.id>> toolbox.mltbx --title "Cross-Platform Array Product Toolbox" --notes "Cross-Platform Array Product Toolbox" --repo <<pipeline.project.git_url>>
 
 workflows:
   toolbox-create-package-release:

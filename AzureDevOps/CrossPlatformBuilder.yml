@@ -43,6 +43,3 @@ jobs:
           PathtoPublish: 'KgToPoundsPythonBuild'
           ArtifactName: 'KgToPounds-$(release)-$(imageName)'
           publishLocation: Container
-        
-
-      

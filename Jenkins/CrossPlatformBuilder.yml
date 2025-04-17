@@ -15,13 +15,19 @@ pipeline {
                 }
                 stages {
                     stage("Build and deploy") {
-                        agent { label "${OS}" } // Assumes you have labels corresponding to the OS types
+                        // Assumes you have labels corresponding to the OS types
+                        agent { label "${OS}" } 
                         tools {
                             matlab "${RELEASE}"
                         }
                         steps {
                             script {
-                                runMATLABCommand(command: 'mex src/arrayProduct.c;, addpath(genpath(pwd));, buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");, save("pythonBuild.mat","buildResults");, results = runtests("tests/KgToPoundsEquivalenceTest.m");,  assertSuccess(results);');
+                                runMATLABCommand(command: '''mex src/arrayProduct.c; 
+                                    addpath(genpath(pwd)); 
+                                    buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild"); 
+                                    save("pythonBuild.mat","buildResults");
+                                    results = runtests("tests/KgToPoundsEquivalenceTest.m");
+                                    assertSuccess(results);''');
                             }
                         }
                         post {

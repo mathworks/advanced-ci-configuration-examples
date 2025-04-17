@@ -47,7 +47,6 @@ jobs:
           tasks: packageToolbox
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-          
       - task: GitHubRelease@1
         inputs:
           gitHubConnection: tsharmaMW
@@ -55,5 +54,4 @@ jobs:
           assets: 'toolbox.mltbx'
           tagSource: 'userSpecifiedTag'
           tag: '$(Build.BuildNumber)'
-
     dependsOn: CompileAndTestMex

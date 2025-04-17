@@ -26,7 +26,6 @@ jobs:
 
       # Sets up MATLAB on the GitHub Actions runner using setup-matlab@v2 and download MATLAB_Compiler_SDK
       - name: Setup MATLAB
-        id: setup-matlab
         uses: matlab-actions/setup-matlab@v2
         with:
           release: ${{ matrix.release }}
@@ -41,7 +40,7 @@ jobs:
           python-version: '3.11'
  
       # Compiles MATLAB function for deployment
-      - name: Compile
+      - name: Compile and Equivalence Test Python Package
         uses: matlab-actions/run-command@v2
         with:
           command: |

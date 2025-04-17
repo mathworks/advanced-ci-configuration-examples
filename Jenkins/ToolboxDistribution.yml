@@ -23,18 +23,16 @@ pipeline {
                             }
                         }
                     }
-                    
                 }
             }
         }
         stage('Create and release toolbox') {
-            
             agent { label 'linux' }
             environment {
                 GITHUB_TOKEN = credentials('github-token') // Store your GitHub token as a Jenkins credential
             }
             tools {
-                matlab 'R2024a'
+                matlab 'R2024b'
             }
             steps {
                 script {

@@ -23,7 +23,7 @@ jobs:
         uses: matlab-actions/setup-matlab@v2
 
       # Runs build to create MEX file and then run tests
-      - name: Run build
+      - name: Run MATLAB build
         uses: matlab-actions/run-build@v2
         with:
           tasks: mex test
@@ -62,7 +62,7 @@ jobs:
           merge-multiple: true
         
       # Packages all files in toolbox folder into a mltbx toolbox package  
-      - name: Run build
+      - name: Run MATLAB build
         uses: matlab-actions/run-build@v2
         with:
           tasks: packageToolbox
