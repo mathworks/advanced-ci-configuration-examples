@@ -1,7 +1,9 @@
 version: 2.1
 orbs:
   matlab: mathworks/matlab@1
-  win: circleci/windows@5.0
+  win: circleci/windows@5
+
+# Define the execution environments for different operating systems
 executors:
   linux:
     machine:
@@ -22,11 +24,15 @@ jobs:
     executor: << parameters.os >>
     steps:
       - checkout
+      
+      # Install MATLAB and required products
       - matlab/install:
           release: << parameters.release >>
           products: >
             MATLAB_Compiler_SDK
             MATLAB_Test
+      
+      # Builds Python package from MATLAB function and verifies functionality through equivalence tests
       - matlab/run-command:
           command: |
             mex src/arrayProduct.c;
@@ -35,14 +41,17 @@ jobs:
             save("pythonBuild.mat","buildResults");
             results = runtests("tests/KgToPoundsEquivalenceTest.m");
             assertSuccess(results);
+      
+      # Stores the built Python package as an artifact
       - store_artifacts:
           path: KgToPoundsPythonBuild
 
 workflows:
   build-and-deploy-python-package:
     jobs:
+      # A job will run for all combinations of OS and release present in the matrix
       - build-and-deploy:
           matrix:
             parameters:
               os: [linux, macos, windows]
-              release: ["R2024a", "R2024b"] 
+              release: ["R2024a", "R2024b"]

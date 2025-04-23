@@ -11,7 +11,7 @@ plan("clean") = CleanTask;
 plan("mex") = MexTask("src/arrayProduct.c","toolbox");
 plan("mex").Outputs = "toolbox/arrayProduct*";
 
-% Add a task to run tests and generate test and coverage results
+% Add a task to run tests and generate test results
 plan("test") = TestTask("tests/arrayProductTest.m", TestResults="test-results/results.xml");
 plan("test").Dependencies = "mex";
 

@@ -1,9 +1,10 @@
 version: 2.1
 orbs:
   matlab: mathworks/matlab@1
-  gh: circleci/github-cli@2.3.0
-  win: circleci/windows@5.0
+  gh: circleci/github-cli@2
+  win: circleci/windows@5
 
+# Define the execution environments for different operating systems
 executors:
   linux:
     machine:
@@ -15,6 +16,7 @@ executors:
     win/default
 
 jobs:
+  # This job compiles MEX files and runs tests across different platforms
   compile-and-test-mex:
     parameters:
       os:
@@ -22,26 +24,41 @@ jobs:
     executor: << parameters.os >>
     steps:
       - checkout
+      
       - matlab/install
+      
+      # Runs build to create MEX file and then run tests
       - matlab/run-build:
           tasks: mex test
+      
+      # Uploads the test results
       - store_artifacts:
           path: test-results/results.xml
+      
+      # Saves MEX files for the packaging job
       - persist_to_workspace:
           root: .
           paths:
             - toolbox/*.mex*
 
+  # This job packages and releases the toolbox after successful MEX compilation
   create-and-release-toolbox:
     machine:
       image: default
     steps:
       - checkout
+      
       - matlab/install
+      
+      # Downloads all mex files from previous job
       - attach_workspace:
           at: .
+      
+      # Packages all files in toolbox folder into a mltbx toolbox package
       - matlab/run-build:
           tasks: packageToolbox
+      
+      # The packaged toolbox is distributed as a GitHub release
       - gh/install
       - run:
           name: Create a Github Release for the Toolbox
@@ -50,6 +67,7 @@ jobs:
 workflows:
   toolbox-create-package-release:
     jobs:
+      # A job will run for all the OS present in the matrix
       - compile-and-test-mex:
           matrix:
             parameters:

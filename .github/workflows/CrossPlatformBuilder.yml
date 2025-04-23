@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Sets up MATLAB on the GitHub Actions runner using setup-matlab@v2 and download MATLAB_Compiler_SDK
+      # Sets up MATLAB on the GitHub Actions runner, downloads MATLAB_Compiler_SDK and MATLAB_Test
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v2
         with:
@@ -33,7 +33,7 @@ jobs:
             MATLAB_Compiler_SDK
             MATLAB_Test
 
-      # Installs Python and add it to the Path
+      # Installs Python and adds it to the Path
       - name: Setup Python
         uses: actions/setup-python@v5 
         with:
@@ -51,7 +51,7 @@ jobs:
             results = runtests("tests/KgToPoundsEquivalenceTest.m");
             assertSuccess(results);
 
-      # Uploads the generated executable as an artifact to GitHub
+      # Uploads the built Python package as an artifact to GitHub
       - name: Upload generated binary
         uses: actions/upload-artifact@v4
         with:

@@ -2,6 +2,7 @@ pipeline {
     agent none
     stages {
         stage('Build and Deploy Python Package') {
+            // Matrix strategy to run builds across different OS and MATLAB release combinations
             matrix {
                 axes {
                     axis {
@@ -17,11 +18,14 @@ pipeline {
                     stage("Build and deploy") {
                         // Assumes you have labels corresponding to the OS types
                         agent { label "${OS}" }
+                        
                         tools {
                             matlab "${RELEASE}"
                         }
+
                         steps {
                             script {
+                                // Builds Python package from MATLAB function and verifies functionality through equivalence tests
                                 runMATLABCommand(command: '''mex src/arrayProduct.c; 
                                     addpath(genpath(pwd)); 
                                     buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild"); 
@@ -30,6 +34,8 @@ pipeline {
                                     assertSuccess(results);''');
                             }
                         }
+
+                        // Store the built Python package as an artifact
                         post {
                             always {
                                 archiveArtifacts artifacts: 'KgToPoundsPythonBuild/*'
