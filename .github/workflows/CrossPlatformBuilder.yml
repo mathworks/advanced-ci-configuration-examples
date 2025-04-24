@@ -1,4 +1,4 @@
-name: Build and Deploy Python Package
+name: Cross-Platform Python Package Build
  
 on:
   push:
@@ -9,8 +9,8 @@ env:
   MLM_LICENSE_TOKEN: ${{ secrets.MLM_LICENSE_TOKEN }}
  
 jobs:
-  # This workflow contains a single job called "build-and-deploy"
-  build-and-deploy:
+  # This workflow contains a single job called "build-python-package"
+  build-python-package:
      
     # A job will run for all combinations of OS and release present in the matrix
     strategy:
@@ -52,7 +52,7 @@ jobs:
             assertSuccess(results);
 
       # Uploads the built Python package as an artifact to GitHub
-      - name: Upload generated binary
+      - name: Upload Python package artifact
         uses: actions/upload-artifact@v4
         with:
           name: KgToPounds-${{ matrix.release }}-${{ matrix.os }}

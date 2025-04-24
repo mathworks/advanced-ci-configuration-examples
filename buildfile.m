@@ -8,7 +8,7 @@ plan = buildplan(localfunctions);
 plan("clean") = CleanTask;
 
 % Add a task to build a MEX file
-plan("mex") = MexTask("src/arrayProduct.c","toolbox");
+plan("mex") = MexTask("src/arrayProduct.c", "toolbox");
 plan("mex").Outputs = "toolbox/arrayProduct*";
 
 % Add a task to run tests and generate test results

@@ -1,5 +1,5 @@
 jobs:
-  - job: BuildAndDeployPythonPackage
+  - job: BuildPythonPackage
     # Matrix strategy to run builds across different OS and MATLAB release combinations
     strategy:
       matrix:
@@ -27,14 +27,14 @@ jobs:
       # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
-          release: '$(release)'
+          release: $(release)
           products: 'MATLAB_Compiler_SDK MATLAB_Test'
       
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests
       - task: RunMATLABCommand@1
         inputs:
           command: |
-            mex src/arrayProduct.c
+            mex src/arrayProduct.c;
             addpath(genpath(pwd));
             buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");
             save("pythonBuild.mat","buildResults");

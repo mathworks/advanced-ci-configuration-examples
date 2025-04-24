@@ -15,7 +15,7 @@ executors:
     win/default
 
 jobs:
-  build-and-deploy:
+  build-python-package:
     parameters:
       os:
         type: executor
@@ -47,10 +47,10 @@ jobs:
           path: KgToPoundsPythonBuild
 
 workflows:
-  build-and-deploy-python-package:
+  cross-platform-build:
     jobs:
       # A job will run for all combinations of OS and release present in the matrix
-      - build-and-deploy:
+      - build-python-package:
           matrix:
             parameters:
               os: [linux, macos, windows]

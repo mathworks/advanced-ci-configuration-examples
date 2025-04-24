@@ -14,7 +14,7 @@ For starter workflows, use the [`ci-configuration-examples`](https://github.com/
 
 # Workflows
 
-The repository contains examples for packaging and distributing a toolbox, as well as building and deploying standalone applications.
+The repository contains examples for packaging and distributing a toolbox, as well as building and uploading Python<sup>&reg;</sup> packages.
 
 - **Package and Distribute Toolbox**: Using a matrix build across multiple platforms, compile, link, and test your C source files to produce a binary MEX file per operating system. Then, bundle the resulting binaries into a toolbox and distribute it as a GitHub release.
 
@@ -26,7 +26,7 @@ The repository contains examples for packaging and distributing a toolbox, as we
     | GitHub Actions| [`.github/workflows/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/ToolboxDistribution.yml) |
     | Jenkins | [`Jenkins/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
 
-- **Build and Deploy Python<sup>&reg;</sup> Packages**: Using a matrix build across multiple platforms and MATLAB releases, build python packages by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;) and deploy the resulting packages as artifacts.
+- **Build and Upload Python Packages**: Using a matrix build across multiple platforms and MATLAB releases, build python packages by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;) and upload the resulting packages as artifacts.
 
     To access the configuration files for this workflow, follow the links in this table.
     | **Platform**                        | **File Path**                                                                                                                                       |
