@@ -39,8 +39,8 @@ jobs:
         with:
           python-version: '3.11'
  
-      # Compiles MATLAB function for deployment
-      - name: Compile and Equivalence Test Python Package
+      # Builds Python package from MATLAB function and verifies functionality through equivalence tests
+      - name: Compile and Verify Python Package
         uses: matlab-actions/run-command@v2
         with:
           command: |
