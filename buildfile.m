@@ -9,7 +9,6 @@ plan("clean") = CleanTask;
 
 % Add a task to build a MEX file
 plan("mex") = MexTask("src/arrayProduct.c", "toolbox");
-plan("mex").Outputs = "toolbox/arrayProduct*";
 
 % Add a task to run tests and generate test results
 plan("test") = TestTask("tests/arrayProductTest.m", TestResults="test-results/results.xml", Dependencies = "mex");
@@ -19,7 +18,7 @@ plan("equivalenceTest") = TestTask("tests/KgToPoundsEquivalenceTest.m", Dependen
 
 % Add a task to package the toolbox   
 plan("packageToolbox").Dependencies = "test";
-plan("packageToolbox").Inputs = plan("mex").Outputs;
+plan("packageToolbox").Inputs = plan("mex").MexFile;
 plan("packageToolbox").Outputs = "toolbox.mltbx";
 plan("packageToolbox").Description = "Package toolbox";
 
