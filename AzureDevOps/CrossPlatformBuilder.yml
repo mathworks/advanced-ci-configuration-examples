@@ -31,15 +31,9 @@ jobs:
           products: 'MATLAB_Compiler_SDK MATLAB_Test'
       
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests
-      - task: RunMATLABCommand@1
+      - task: RunMATLABBuild@1
         inputs:
-          command: |
-            mex src/arrayProduct.c;
-            addpath(genpath(pwd));
-            buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");
-            save("pythonBuild.mat","buildResults");
-            results = runtests("tests/KgToPoundsEquivalenceTest.m");
-            assertSuccess(results);
+          tasks: mex buildPythonPackage equivalenceTest
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       

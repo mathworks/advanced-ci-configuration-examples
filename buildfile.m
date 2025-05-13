@@ -12,8 +12,10 @@ plan("mex") = MexTask("src/arrayProduct.c", "toolbox");
 plan("mex").Outputs = "toolbox/arrayProduct*";
 
 % Add a task to run tests and generate test results
-plan("test") = TestTask("tests/arrayProductTest.m", TestResults="test-results/results.xml");
-plan("test").Dependencies = "mex";
+plan("test") = TestTask("tests/arrayProductTest.m", TestResults="test-results/results.xml", Dependencies = "mex");
+
+% Add a task to run equivalence tests
+plan("equivalenceTest") = TestTask("tests/KgToPoundsEquivalenceTest.m", Dependencies = ["mex" "buildPythonPackage"]);
 
 % Add a task to package the toolbox   
 plan("packageToolbox").Dependencies = "test";
@@ -26,13 +28,19 @@ plan.DefaultTasks = "packageToolbox";
 end
 
 function packageToolboxTask(~)
-    % Create an mltbx toolbox package
-    identifier = "arrayProduct";
-    toolboxFolder = "toolbox";
-    opts = matlab.addons.toolbox.ToolboxOptions(toolboxFolder,identifier);
-    
-    opts.ToolboxName = "Cross-Platform Array Product Toolbox";
-    opts.MinimumMatlabRelease = "R2024a";
+% Create an mltbx toolbox package
+identifier = "arrayProduct";
+toolboxFolder = "toolbox";
+opts = matlab.addons.toolbox.ToolboxOptions(toolboxFolder,identifier);
 
-    matlab.addons.toolbox.packageToolbox(opts);
+opts.ToolboxName = "Cross-Platform Array Product Toolbox";
+opts.MinimumMatlabRelease = "R2024a";
+
+matlab.addons.toolbox.packageToolbox(opts);
+end
+
+function buildPythonPackageTask(~)
+% Build a Python Package from MATLAB function
+buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild");
+save("pythonBuild.mat","buildResults");
 end

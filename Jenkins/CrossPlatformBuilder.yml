@@ -26,13 +26,7 @@ pipeline {
                         steps {
                             script {
                                 // Builds Python package from MATLAB function and verifies functionality through equivalence tests
-                                runMATLABCommand(command: '''
-                                    mex src/arrayProduct.c; 
-                                    addpath(genpath(pwd)); 
-                                    buildResults = compiler.build.pythonPackage("src/KgToPounds.m", OutputDir = "KgToPoundsPythonBuild"); 
-                                    save("pythonBuild.mat","buildResults");
-                                    results = runtests("tests/KgToPoundsEquivalenceTest.m");
-                                    assertSuccess(results);''');
+                                runMATLABBuild(tasks: 'mex buildPythonPackage equivalenceTest')
                             }
                         }
 
