@@ -29,7 +29,7 @@ jobs:
       
       # Runs build to create MEX file and then run tests
       - matlab/run-build:
-          tasks: mex test
+          tasks: test
       
       # Uploads the test results
       - store_artifacts:

@@ -22,7 +22,7 @@ pipeline {
                         steps {
                             script {
                                 // Runs build to create MEX file and then run tests
-                                runMATLABBuild(tasks: 'mex test')
+                                runMATLABBuild(tasks: 'test')
                                 
                                 // Uploads the test results
                                 junit testResults: 'test-results/results.xml', skipPublishingChecks: true

@@ -17,7 +17,7 @@ jobs:
       # Runs build to create MEX file and then run tests
       - task: RunMATLABBuild@1
         inputs:
-          tasks: mex test
+          tasks: test
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       

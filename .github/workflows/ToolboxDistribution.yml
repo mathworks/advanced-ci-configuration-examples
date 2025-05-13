@@ -26,7 +26,7 @@ jobs:
       - name: Run MATLAB build
         uses: matlab-actions/run-build@v2
         with:
-          tasks: mex test
+          tasks: test
 
       # Uploads the test results and MEX files to GitHub
       - name: Upload test results          

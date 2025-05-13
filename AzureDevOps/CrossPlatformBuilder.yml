@@ -33,7 +33,7 @@ jobs:
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests
       - task: RunMATLABBuild@1
         inputs:
-          tasks: mex buildPythonPackage equivalenceTest
+          tasks: equivalenceTest
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
