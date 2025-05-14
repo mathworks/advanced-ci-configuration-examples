@@ -1,0 +1,44 @@
+pipeline {
+    agent none
+    stages {
+        stage('Build Python Package') {
+            // Matrix strategy to run builds across different OS and MATLAB release combinations
+            matrix {
+                axes {
+                    axis {
+                        name 'OS'
+                        values 'linux', 'windows', 'macos'
+                    }
+                    axis {
+                        name 'RELEASE'
+                        values 'R2024a', 'R2024b'
+                    }
+                }
+                stages {
+                    stage("Build and Test") {
+                        // Assumes you have labels corresponding to the OS types
+                        agent { label "${OS}" }
+                        
+                        tools {
+                            matlab "${RELEASE}"
+                        }
+
+                        steps {
+                            script {
+                                // Builds Python package from MATLAB function and verifies functionality through equivalence tests
+                                runMATLABBuild(tasks: 'equivalenceTest')
+                            }
+                        }
+
+                        // Store the built Python package as an artifact
+                        post {
+                            always {
+                                archiveArtifacts artifacts: 'KgToPoundsPythonBuild/*'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}

@@ -1,0 +1,53 @@
+name: Cross-Platform Python Package Build
+ 
+on:
+  push:
+    branches: [ main ]
+ 
+# Utilizes repository-stored secrets for MATLAB's batch-token licensing
+env:
+  MLM_LICENSE_TOKEN: ${{ secrets.MLM_LICENSE_TOKEN }}
+ 
+jobs:
+  # This workflow contains a single job called "build-python-package"
+  build-python-package:
+     
+    # A job will run for all combinations of OS and release present in the matrix
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        release: [R2024a, R2024b]
+ 
+    # The type of runner that the job will run on
+    runs-on: ${{ matrix.os }}
+ 
+    steps:
+      - uses: actions/checkout@v3
+
+      # Sets up MATLAB on the GitHub Actions runner, downloads MATLAB_Compiler_SDK and MATLAB_Test
+      - name: Setup MATLAB
+        uses: matlab-actions/setup-matlab@v2
+        with:
+          release: ${{ matrix.release }}
+          products: >
+            MATLAB_Compiler_SDK
+            MATLAB_Test
+
+      # Installs Python and adds it to the Path
+      - name: Setup Python
+        uses: actions/setup-python@v5 
+        with:
+          python-version: '3.11'
+ 
+      # Builds Python package from MATLAB function and verifies functionality through equivalence tests
+      - name: Compile and Verify Python Package
+        uses: matlab-actions/run-build@v2
+        with:
+          tasks: equivalenceTest
+
+      # Uploads the built Python package as an artifact to GitHub
+      - name: Upload Python package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: KgToPounds-${{ matrix.release }}-${{ matrix.os }}
+          path: KgToPounds*

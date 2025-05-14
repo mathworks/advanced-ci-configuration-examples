@@ -1,0 +1,45 @@
+jobs:
+  - job: BuildPythonPackage
+    # Matrix strategy to run builds across different OS and MATLAB release combinations
+    strategy:
+      matrix:
+        linux-R2024a:
+          imageName: ubuntu-latest
+          release: R2024a
+        linux-R2024b:
+          imageName: ubuntu-latest
+          release: R2024b
+        mac-R2024a:
+          imageName: macOS-latest
+          release: R2024a
+        mac-R2024b:
+          imageName: macOS-latest
+          release: R2024b
+        windows-R2024a:
+          imageName: windows-latest
+          release: R2024a 
+        windows-R2024b:
+          imageName: windows-latest
+          release: R2024b
+    pool:
+      vmImage: $(imageName)
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          release: $(release)
+          products: MATLAB_Compiler_SDK MATLAB_Test
+      
+      # Builds Python package from MATLAB function and verifies functionality through equivalence tests
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: equivalenceTest
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      # Store the built Python package as an artifact
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: KgToPoundsPythonBuild
+          ArtifactName: KgToPounds-$(release)-$(imageName)
+          publishLocation: Container

@@ -1,0 +1,51 @@
+version: 2.1
+orbs:
+  matlab: mathworks/matlab@1
+  win: circleci/windows@5
+
+# Define the execution environments for different operating systems
+executors:
+  linux:
+    machine:
+      image: default
+  macos:
+    macos:
+      xcode: 15.4.0
+  windows:
+    win/default
+
+jobs:
+  build-python-package:
+    parameters:
+      os:
+        type: executor
+      release:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      
+      # Install MATLAB and required products
+      - matlab/install:
+          release: << parameters.release >>
+          products: >
+            MATLAB_Compiler_SDK
+            MATLAB_Test
+      
+      # Builds Python package from MATLAB function and verifies functionality through equivalence tests
+      - matlab/run-build:
+          tasks: equivalenceTest
+      
+      # Stores the built Python package as an artifact
+      - store_artifacts:
+          path: KgToPoundsPythonBuild
+
+workflows:
+  cross-platform-build:
+    jobs:
+      # A job will run for all combinations of OS and release present in the matrix
+      - build-python-package:
+          matrix:
+            parameters:
+              os: [linux, macos, windows]
+              release: ["R2024a", "R2024b"]

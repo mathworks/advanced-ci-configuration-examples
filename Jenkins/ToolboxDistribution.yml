@@ -1,0 +1,68 @@
+pipeline {
+    agent none
+    stages {
+        // This job compiles MEX files and runs tests across different platforms
+        stage('Compile and test MEX on matrix agents') {
+            matrix {
+                axes {
+                    axis {
+                        name 'OS'
+                        values 'linux', 'windows', 'macos'
+                    }
+                }
+                stages {
+                    stage("Compile and test MEX") {
+                        // Assumes you have labels corresponding to the OS types
+                        agent { label "${OS}" }
+                        
+                        tools {
+                            matlab 'R2024b'
+                        }
+                        
+                        steps {
+                            script {
+                                // Runs build to create MEX file and then run tests
+                                runMATLABBuild(tasks: 'test')
+                                
+                                // Uploads the test results
+                                junit testResults: 'test-results/results.xml', skipPublishingChecks: true
+                                
+                                // Saves MEX files for the packaging job
+                                stash includes: 'toolbox/*.mex*', name: "mex-${OS}"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // This job packages and releases the toolbox after successful MEX compilation
+        stage('Create and release toolbox') {
+            agent { label 'linux' }
+            
+            environment {
+                GITHUB_TOKEN = credentials('github-token') // Store your GitHub token as a Jenkins credential
+            }
+            
+            tools {
+                matlab 'R2024b'
+            }
+            
+            steps {
+                script {
+                    // Downloads all mex files from previous job
+                    def agents = ['linux', 'windows', 'macos']
+                    agents.each { OS ->
+                        unstash "mex-${OS}"
+                    }
+                }
+                
+                // Packages all files in toolbox folder into a mltbx toolbox package
+                runMATLABBuild(tasks: 'packageToolbox')
+                script {
+                    // The packaged toolbox is distributed as a GitHub release
+                    sh "gh release create v1.${env.BUILD_NUMBER}.0 toolbox.mltbx --title 'Cross-Platform Array Product Toolbox' --repo ${env.GIT_URL}"
+                }
+            }
+        }
+    } 
+}
