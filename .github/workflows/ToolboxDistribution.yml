@@ -3,6 +3,10 @@ name: Compile, Test and Release toolbox
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
 
 jobs:
   # This workflow contains two jobs called "compile-and-test-mex" and "create-and-release-toolbox"
@@ -68,7 +72,7 @@ jobs:
           tasks: packageToolbox
 
       # The packaged toolbox is distributed as a GitHub release
-      - name: Create relase and upload asset
+      - name: Create release and upload asset
         run: |
           gh release create ${{github.run_id}} --title "Cross-Platform Array Product Toolbox" toolbox.mltbx
         env:

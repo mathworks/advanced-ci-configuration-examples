@@ -3,6 +3,10 @@ name: Cross-Platform Python Package Build
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
  
 # Utilizes repository-stored secrets for MATLAB's batch-token licensing
 env:
@@ -16,7 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        release: [R2024a, R2024b]
+        release: [R2024b, R2025a]
  
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}

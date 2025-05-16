@@ -63,7 +63,7 @@ jobs:
       # The packaged toolbox is distributed as a GitHub release
       - task: GitHubRelease@1
         inputs:
-          gitHubConnection: MathWorks
+          gitHubConnection: advanced-ci-configuration-examples
           title: "Cross-Platform Array Product Toolbox"
           assets: 'toolbox.mltbx'
           tagSource: 'userSpecifiedTag'
