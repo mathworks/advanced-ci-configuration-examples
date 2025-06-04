@@ -24,7 +24,7 @@ The repository contains examples for packaging and distributing a toolbox, as we
     | Azure DevOps| [`AzureDevOps/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ToolboxDistribution.yml) |
     | CircleCI| [`.circleci/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/ToolboxDistribution.yml) |
     | GitHub Actions| [`.github/workflows/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/ToolboxDistribution.yml) |
-    | Jenkins | [`Jenkins/ToolboxDistribution.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution.yml) |
+    | Jenkins | [`Jenkins/ToolboxDistribution/Jenkinsfile`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/ToolboxDistribution/Jenkinsfile) |
 
 - **Build and Upload Python Packages**: Using a matrix build across multiple platforms and MATLAB releases, build python packages by compiling MATLAB functions (requires MATLAB Compiler SDK&trade;) and upload the resulting packages as artifacts.
 
@@ -34,7 +34,7 @@ The repository contains examples for packaging and distributing a toolbox, as we
     | Azure DevOps| [`AzureDevOps/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/CrossPlatformBuilder.yml) |
     | CircleCI| [`.circleci/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/CrossPlatformBuilder.yml) |
     | GitHub Actions| [`.github/workflows/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/CrossPlatformBuilder.yml) |
-    | Jenkins | [`Jenkins/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/CrossPlatformBuilder.yml) |
+    | Jenkins | [`Jenkins/CrossPlatformBuilder/Jenkinsfile`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/CrossPlatformBuilder/Jenkinsfile) |
 
 <br>
 
