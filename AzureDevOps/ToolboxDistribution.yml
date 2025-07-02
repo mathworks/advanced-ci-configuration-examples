@@ -15,14 +15,14 @@ jobs:
       - task: InstallMATLAB@1
 
       - script: |
-          matlab-batch matlabroot
+          run-matlab-command matlabroot
           
       - task: Cache@2
         inputs:
           key: '"$(imageName)"'
           restoreKeys: |
              "$(imageName)"
-          path: $(YARN_CACHE_FOLDER)
+          path: $(MATLAB_CACHE_FOLDER)
         displayName: Cache MATLAB
       
       # Runs build to create MEX file and then run tests
