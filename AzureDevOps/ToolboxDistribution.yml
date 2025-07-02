@@ -21,19 +21,19 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
-      # - script: MATHWORKS_TOKEN=
-      - script: MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
+      # - script: MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
+      - script: matlab-batch matlabroot
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       - script: echo $MATLAB_CACHE_FOLDER
           
-      - task: Cache@2
-        inputs:
-          key: '"$(imageName)"'
-          restoreKeys: |
-             "$(imageName)"
-          path: $(MATLAB_CACHE_FOLDER)
-        displayName: Cache MATLAB
+      # - task: Cache@2
+      #   inputs:
+      #     key: '"$(imageName)"'
+      #     restoreKeys: |
+      #        "$(imageName)"
+      #     path: $(MATLAB_CACHE_FOLDER)
+      #   displayName: Cache MATLAB
       
       # Uploads the test results
       - publish: 'test-results/results.xml'
