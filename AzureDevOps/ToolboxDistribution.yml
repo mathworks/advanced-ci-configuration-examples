@@ -26,9 +26,9 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
         ${{ if eq(variables['imageName'], 'windows-latest') }}:
-          script: $MATLAB_CACHE_FOLDER = matlab-batch matlabroot
+          - script: $MATLAB_CACHE_FOLDER = matlab-batch matlabroot
         ${{ else }}:
-          script: set MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
+          - script: set MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
       - script: echo $MATLAB_CACHE_FOLDER
           
       # - task: Cache@2
