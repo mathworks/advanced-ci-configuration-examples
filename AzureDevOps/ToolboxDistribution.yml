@@ -13,9 +13,19 @@ jobs:
       vmImage: $(imageName)
     steps:
       - task: InstallMATLAB@1
+      
+      # Runs build to create MEX file and then run tests
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: test
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
-      - script: |
-          run-matlab-command matlabroot
+      # - script: MATHWORKS_TOKEN=
+      - script: MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      - script: echo $MATLAB_CACHE_FOLDER
           
       - task: Cache@2
         inputs:
@@ -24,13 +34,6 @@ jobs:
              "$(imageName)"
           path: $(MATLAB_CACHE_FOLDER)
         displayName: Cache MATLAB
-      
-      # Runs build to create MEX file and then run tests
-      - task: RunMATLABBuild@1
-        inputs:
-          tasks: test
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
       # Uploads the test results
       - publish: 'test-results/results.xml'
