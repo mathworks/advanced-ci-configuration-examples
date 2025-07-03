@@ -29,8 +29,11 @@ jobs:
       # - script: echo "Hello"
       #   ${{ if eq(variables['imageName'], 'windows-latest') }}:
       - script: |
-          export MATLABROOT=$(cat matlabroot.txt)
-          echo "MATLAB_CACHE_FOLDER=$MATLABROOT" >> $BASH_ENV
+          export MATLAB_CACHE_FOLDER=$(cat matlabroot.txt)
+          echo $(MATLAB_CACHE_FOLDER)
+          echo "##vso[task.setvariable variable=matlab.cache.folder]MATLAB_CACHE_FOLDER"
+          echo $(MATLAB_CACHE_FOLDER)
+          # echo "MATLAB_CACHE_FOLDER=$MATLAB_CACHE_FOLDER" >> $BASH_ENV
       # - script: $MATLAB_CACHE_FOLDER = matlab-batch matlabroot
       #   env:
       #     MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
