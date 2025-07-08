@@ -27,7 +27,7 @@ jobs:
           echo $PATH
           ls
           which matlab
-          cd $(MATLABROOT)
+          cd '$(MATLABROOT)'
           ls
         
       - task: InstallMATLAB@1
