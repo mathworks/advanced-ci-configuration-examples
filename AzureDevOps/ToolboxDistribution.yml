@@ -29,10 +29,15 @@ jobs:
       # - script: echo "Hello"
       #   ${{ if eq(variables['imageName'], 'windows-latest') }}:
       - script: |
-          export MATLAB_CACHE_FOLDER=$(cat matlabroot.txt)
-          echo $(MATLAB_CACHE_FOLDER)
-          echo "##vso[task.setvariable variable=matlab.cache.folder]MATLAB_CACHE_FOLDER"
-          echo $(MATLAB_CACHE_FOLDER)
+          # export MATLAB_CACHE_FOLDER=$(cat matlabroot.txt)
+          # echo $(MATLAB_CACHE_FOLDER)
+          # echo "##vso[task.setvariable variable=matlab.cache.folder]MATLAB_CACHE_FOLDER"
+          # echo $(MATLAB_CACHE_FOLDER)
+          matlab -batch "disp(matlabroot)" > matroot.txt
+          MATLABROOT=$(tail -n 1 matroot.txt)
+          echo "##vso[task.setvariable variable=MATLABROOT]$MATLABROOT"
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
           # echo "MATLAB_CACHE_FOLDER=$MATLAB_CACHE_FOLDER" >> $BASH_ENV
       # - script: $MATLAB_CACHE_FOLDER = matlab-batch matlabroot
       #   env:
@@ -41,7 +46,7 @@ jobs:
         #   - script: set MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
         #     env:
         #       MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-      - script: echo $MATLAB_CACHE_FOLDER
+      - script: echo $(MATLABROOT)
           
       # - task: Cache@2
       #   inputs:
