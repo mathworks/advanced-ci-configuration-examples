@@ -27,6 +27,8 @@ jobs:
           # echo $PATH
           ls
           which matlab
+        env:
+          PATH: "$$(MATLABROOT)/bin:$(PATH)"
       - script: |
           cd '$(MATLABROOT)'/bin
           ls
