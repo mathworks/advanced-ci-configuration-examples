@@ -11,8 +11,6 @@ jobs:
         #   imageName: windows-latest
     pool:
       vmImage: $(imageName)
-    env:
-      PATH: "$(MATLABROOT)/bin:$(PATH)"
     steps:
       - task: Cache@2
         inputs:
@@ -33,6 +31,8 @@ jobs:
           cd '$(MATLABROOT)'/bin
           ls
           which matlab
+        env:
+          PATH: "$$(MATLABROOT)/bin:$(PATH)"
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
