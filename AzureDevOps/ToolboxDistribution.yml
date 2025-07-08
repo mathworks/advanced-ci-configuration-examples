@@ -27,6 +27,7 @@ jobs:
           echo $PATH
           ls
           which matlab
+      - script: |
           cd '$(MATLABROOT)'/bin
           ls
           which matlab
