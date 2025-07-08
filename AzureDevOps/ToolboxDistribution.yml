@@ -28,13 +28,13 @@ jobs:
           ls
           which matlab
         env:
-          PATH: "$$(MATLABROOT)/bin:$(PATH)"
+          PATH: "$(MATLABROOT)/bin:$(PATH)"
       - script: |
           cd '$(MATLABROOT)'/bin
           ls
           which matlab
         env:
-          PATH: "$$(MATLABROOT)/bin:$(PATH)"
+          PATH: "$(MATLABROOT)/bin:$(PATH)"
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
