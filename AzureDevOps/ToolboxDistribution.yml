@@ -23,7 +23,7 @@ jobs:
 
       - script: |
           echo $PATH
-          export PATH='"$(MATLABROOT)":$PATH'
+          export PATH="$$(MATLABROOT):$PATH"
           echo $PATH
           ls
           which matlab
