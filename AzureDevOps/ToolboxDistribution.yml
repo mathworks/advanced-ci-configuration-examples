@@ -12,7 +12,17 @@ jobs:
     pool:
       vmImage: $(imageName)
     steps:
+      - task: Cache@2
+        inputs:
+          key: "$(imageName)"
+          restoreKeys: |
+             "$(imageName)"
+          path: $(MATLABROOT)
+          cacheHitVar: CACHE_RESTORED
+        displayName: Cache MATLAB
+        
       - task: InstallMATLAB@1
+        condition: ne(variables.CACHE_RESTORED, 'true')
 
       - task: RunMATLABCommand@1
         inputs:
@@ -38,14 +48,6 @@ jobs:
         #     env:
         #       MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       - script: echo $(MATLABROOT)
-          
-      - task: Cache@2
-        inputs:
-          key: "$(imageName)"
-          restoreKeys: |
-             "$(imageName)"
-          path: $(MATLABROOT)
-        displayName: Cache MATLAB
 
       # Runs build to create MEX file and then run tests
       - task: RunMATLABBuild@1
