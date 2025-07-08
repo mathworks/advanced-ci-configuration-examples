@@ -11,6 +11,8 @@ jobs:
         #   imageName: windows-latest
     pool:
       vmImage: $(imageName)
+    env:
+      PATH: "$$(MATLABROOT)/bin:$(PATH)"
     steps:
       - task: Cache@2
         inputs:
@@ -23,8 +25,8 @@ jobs:
 
       - script: |
           echo $PATH
-          export PATH='$(MATLABROOT)'/bin:$PATH
-          echo $PATH
+          # export PATH='$(MATLABROOT)'/bin:$PATH
+          # echo $PATH
           ls
           which matlab
       - script: |
