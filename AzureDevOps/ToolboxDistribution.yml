@@ -23,10 +23,12 @@ jobs:
 
       - script: |
           echo $PATH
-          export PATH="$(MATLABROOT):$PATH"
+          export PATH="$MATLABROOT:$PATH"
           echo $PATH
           ls
           which matlab
+          cd $(MATLABROOT)
+          ls
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
