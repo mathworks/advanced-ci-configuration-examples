@@ -25,6 +25,8 @@ jobs:
           echo $PATH
           export PATH="/opt/hostedtoolcache/MATLAB:$PATH"
           echo $PATH
+          ls
+          which matlab
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
