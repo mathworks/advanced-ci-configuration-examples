@@ -21,14 +21,15 @@ jobs:
           cacheHitVar: CACHE_RESTORED
         displayName: Cache MATLAB
 
-      - script: |
-          echo $PATH
-          # export PATH='$(MATLABROOT)'/bin:$PATH
-          # echo $PATH
-          ls
-          which matlab
-        env:
-          PATH: "$(MATLABROOT)/bin:$(PATH)"
+      # - script: |
+      #     echo $PATH
+      #     # export PATH='$(MATLABROOT)'/bin:$PATH
+      #     # echo $PATH
+      #     ls
+      #     which matlab
+      #   env:
+      #     PATH: "$(MATLABROOT)/bin:$(PATH)"
+          
       # - script: |
       #     cd '$(MATLABROOT)'/bin
       #     ls
