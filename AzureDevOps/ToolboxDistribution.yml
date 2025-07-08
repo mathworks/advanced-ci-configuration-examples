@@ -20,6 +20,8 @@ jobs:
           path: $(MATLABROOT)
           cacheHitVar: CACHE_RESTORED
         displayName: Cache MATLAB
+
+      - script: echo $PATH
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
