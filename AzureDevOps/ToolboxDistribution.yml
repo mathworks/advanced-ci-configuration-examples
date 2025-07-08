@@ -21,7 +21,10 @@ jobs:
           cacheHitVar: CACHE_RESTORED
         displayName: Cache MATLAB
 
-      - script: echo $PATH
+      - script: |
+          echo $PATH
+          export PATH="/opt/hostedtoolcache/MATLAB:$PATH"
+          echo $PATH
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
