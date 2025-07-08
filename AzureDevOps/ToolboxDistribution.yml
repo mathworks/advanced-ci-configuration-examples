@@ -46,13 +46,13 @@ jobs:
         #       MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       - script: echo $(MATLABROOT)
           
-      # - task: Cache@2
-      #   inputs:
-      #     key: '"$(imageName)"'
-      #     restoreKeys: |
-      #        "$(imageName)"
-      #     path: $(MATLAB_CACHE_FOLDER)
-      #   displayName: Cache MATLAB
+      - task: Cache@2
+        inputs:
+          key: '"$(imageName)"'
+          restoreKeys: |
+             "$(imageName)"
+          path: $(MATLABROOT)
+        displayName: Cache MATLAB
       
       # Uploads the test results
       - publish: 'test-results/results.xml'
