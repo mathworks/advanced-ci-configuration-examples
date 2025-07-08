@@ -42,6 +42,8 @@ jobs:
       - task: RunMATLABCommand@1
         inputs:
           command: "fid = fopen('matlabroot.txt','w'); fprintf(fid, '%s', matlabroot); fclose(fid);"
+        env:
+          PATH: "$(MATLABROOT)/bin:$(PATH)"
 
       # - script: MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
       # - script: echo "Hello"
