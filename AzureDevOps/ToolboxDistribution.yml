@@ -21,6 +21,9 @@ jobs:
           cacheHitVar: MATLAB_CACHE_RESTORED
         displayName: Cache MATLAB
 
+      - script: |
+          ls
+
       # need to check inside extension
       # condition: ne(variables.MATLAB_CACHE_RESTORED, 'true')
       - task: InstallMATLAB@1
