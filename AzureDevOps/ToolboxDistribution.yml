@@ -27,9 +27,9 @@ jobs:
       - script: |
           ls
           
-      # need to check inside extension
-      # condition: ne(variables.MATLAB_CACHE_RESTORED, 'true')
       - task: InstallMATLAB@1
+        condition: ne(variables.MATLAB_CACHE_RESTORED, 'true')
+        # need to check inside extension
 
       - task: RunMATLABCommand@1
         inputs:
