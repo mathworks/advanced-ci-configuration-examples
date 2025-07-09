@@ -12,14 +12,12 @@ jobs:
     pool:
       vmImage: $(imageName)
     variables:
-      MATLABROOT_V2: $(AGENT_TOOLSDIRECTORY)/MATLAB/2024.2.999/x64
+      MATLABROOT_V3: $(AGENT_TOOLSDIRECTORY)/MATLAB/2024.2.999/x64
     steps:
       - task: Cache@2
         inputs:
-          key: "$(imageNameV2)"
-          # restoreKeys: |
-          #    "$(imageNameV2)"
-          path: $(MATLABROOT_V2)
+          key: "v3"
+          path: $(MATLABROOT_V3)
           cacheHitVar: MATLAB_CACHE_RESTORED
         displayName: Cache MATLAB
 
