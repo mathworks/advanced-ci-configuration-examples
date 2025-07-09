@@ -12,14 +12,6 @@ jobs:
     pool:
       vmImage: $(imageName)
     steps:
-      - task: Cache@2
-        inputs:
-          key: "$(imageName)"
-          restoreKeys: |
-             "$(imageName)"
-          path: "$(MATLABROOT)"
-          cacheHitVar: CACHE_RESTORED
-        displayName: Cache MATLAB
 
       # - script: |
       #     echo $PATH
@@ -39,6 +31,15 @@ jobs:
         
       - task: InstallMATLAB@1
         condition: ne(variables.CACHE_RESTORED, 'true')
+
+      # - task: Cache@2
+      #   inputs:
+      #     key: "$(imageName)"
+      #     restoreKeys: |
+      #        "$(imageName)"
+      #     path: "$(MATLABROOT)"
+      #     cacheHitVar: CACHE_RESTORED
+      #   displayName: Cache MATLAB
 
       - task: RunMATLABCommand@1
         inputs:
