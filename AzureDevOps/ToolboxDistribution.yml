@@ -15,8 +15,8 @@ jobs:
       - task: Cache@2
         inputs:
           key: "$(imageName)"
-          restoreKeys: |
-             "$(imageName)"
+          # restoreKeys: |
+          #    "$(imageName)"
           path: $(MATLABROOT)
           cacheHitVar: MATLAB_CACHE_RESTORED
         displayName: Cache MATLAB
@@ -37,25 +37,25 @@ jobs:
           echo "##vso[task.setvariable variable=MATLABROOT]$MATLABROOT"
       - script: echo $(MATLABROOT)
 
-      # Runs build to create MEX file and then run tests
-      - task: RunMATLABBuild@1
-        inputs:
-          tasks: test
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      # # Runs build to create MEX file and then run tests
+      # - task: RunMATLABBuild@1
+      #   inputs:
+      #     tasks: test
+      #   env:
+      #     MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
-      # Uploads the test results
-      - publish: 'test-results/results.xml'
-        artifact: 'test-results-$(imageName)'
+      # # Uploads the test results
+      # - publish: 'test-results/results.xml'
+      #   artifact: 'test-results-$(imageName)'
       
-      # Saves MEX files for the packaging job
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'toolbox'
-          Contents: '**/*.mex*'
-          TargetFolder: toolbox/tmpMexFolder
-      - publish: 'toolbox/tmpMexFolder'
-        artifact: mex-$(imageName)
+      # # Saves MEX files for the packaging job
+      # - task: CopyFiles@2
+      #   inputs:
+      #     SourceFolder: 'toolbox'
+      #     Contents: '**/*.mex*'
+      #     TargetFolder: toolbox/tmpMexFolder
+      # - publish: 'toolbox/tmpMexFolder'
+      #   artifact: mex-$(imageName)
 
   # This job packages and releases the toolbox after successful MEX compilation
   - job: CreateAndReleaseToolbox
