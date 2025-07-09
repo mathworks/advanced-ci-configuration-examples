@@ -19,7 +19,7 @@ jobs:
     steps:
       - task: Cache@2
         inputs:
-          key: "v3"
+          key: "$(imageName)-v3"
           path: $(MATLABROOT_V3)
           cacheHitVar: MATLAB_CACHE_RESTORED
         displayName: Cache MATLAB
@@ -38,10 +38,10 @@ jobs:
         # env:
         #   PATH: "$(MATLABROOT)/bin:$(PATH)"
 
-      - script: |
-          MATLABROOT=$(tail -n 1 matlabroot.txt)
-          echo "##vso[task.setvariable variable=MATLABROOT]$MATLABROOT"
-      - script: echo $(MATLABROOT)
+      # - script: |
+      #     MATLABROOT=$(tail -n 1 matlabroot.txt)
+      #     echo "##vso[task.setvariable variable=MATLABROOT]$MATLABROOT"
+      # - script: echo $(MATLABROOT)
 
       # # Runs build to create MEX file and then run tests
       # - task: RunMATLABBuild@1
