@@ -5,14 +5,17 @@ jobs:
       matrix:
         linux:
           imageName: ubuntu-latest
+          endpoint: MATLAB/2024.2.999/x64
         mac:
           imageName: macOS-latest
-        # windows:
-        #   imageName: windows-latest
+          endpoint: MATLAB/2024.2.999/x64/MATLAB.app
+        windows:
+          imageName: windows-latest
+          endpoint: MATLAB/2024.2.999/x64
     pool:
       vmImage: $(imageName)
     variables:
-      MATLABROOT_V3: $(AGENT_TOOLSDIRECTORY)/MATLAB/2024.2.999/x64
+      MATLABROOT_V3: $(AGENT_TOOLSDIRECTORY)/$(endpoint)
     steps:
       - task: Cache@2
         inputs:
