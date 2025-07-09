@@ -12,34 +12,17 @@ jobs:
     pool:
       vmImage: $(imageName)
     steps:
-
-      # - script: |
-      #     echo $PATH
-      #     # export PATH='$(MATLABROOT)'/bin:$PATH
-      #     # echo $PATH
-      #     ls
-      #     which matlab
-      #   env:
-      #     PATH: "$(MATLABROOT)/bin:$(PATH)"
-          
-      # - script: |
-      #     cd '$(MATLABROOT)'/bin
-      #     ls
-      #     which matlab
-      #   env:
-      #     PATH: "$(MATLABROOT)/bin:$(PATH)"
-        
-      - task: InstallMATLAB@1
-        condition: ne(variables.CACHE_RESTORED, 'true')
-
       # - task: Cache@2
       #   inputs:
       #     key: "$(imageName)"
       #     restoreKeys: |
       #        "$(imageName)"
-      #     path: "$(MATLABROOT)"
+      #     path: $(MATLABROOT)
       #     cacheHitVar: CACHE_RESTORED
       #   displayName: Cache MATLAB
+      
+      - task: InstallMATLAB@1
+        # condition: ne(variables.CACHE_RESTORED, 'true')
 
       - task: RunMATLABCommand@1
         inputs:
@@ -47,24 +30,10 @@ jobs:
         env:
           PATH: "$(MATLABROOT)/bin:$(PATH)"
 
-      # - script: MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
-      # - script: echo "Hello"
-      #   ${{ if eq(variables['imageName'], 'windows-latest') }}:
       - script: |
-          # export MATLAB_CACHE_FOLDER=$(cat matlabroot.txt)
-          # echo $(MATLAB_CACHE_FOLDER)
-          # echo "##vso[task.setvariable variable=matlab.cache.folder]MATLAB_CACHE_FOLDER"
-          # matlab -batch "disp(matlabroot)" > matroot.txt
           MATLABROOT=$(tail -n 1 matlabroot.txt)
           echo "##vso[task.setvariable variable=MATLABROOT]$MATLABROOT"
-          # echo "MATLAB_CACHE_FOLDER=$MATLAB_CACHE_FOLDER" >> $BASH_ENV
-      # - script: $MATLAB_CACHE_FOLDER = matlab-batch matlabroot
-      #   env:
-      #     MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-        # ${{ else }}:
-        #   - script: set MATLAB_CACHE_FOLDER=$(matlab-batch matlabroot)
-        #     env:
-        #       MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+          echo $(MATLABROOT)
       - script: echo $(MATLABROOT)
 
       # Runs build to create MEX file and then run tests
