@@ -12,7 +12,7 @@ jobs:
     pool:
       vmImage: $(imageName)
     variables:
-      MATLABROOT_V2: /opt/hostedtoolcache/MATLAB/2024.2.999/x64
+      MATLABROOT_V2: $(AGENT_TOOLSDIRECTORY)/MATLAB/2024.2.999/x64
     steps:
       - task: Cache@2
         inputs:
