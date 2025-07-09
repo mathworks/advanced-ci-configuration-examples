@@ -12,28 +12,29 @@ jobs:
     pool:
       vmImage: $(imageName)
     steps:
-      # - task: Cache@2
-      #   inputs:
-      #     key: "$(imageName)"
-      #     restoreKeys: |
-      #        "$(imageName)"
-      #     path: $(MATLABROOT)
-      #     cacheHitVar: CACHE_RESTORED
-      #   displayName: Cache MATLAB
-      
+      - task: Cache@2
+        inputs:
+          key: "$(imageName)"
+          restoreKeys: |
+             "$(imageName)"
+          path: $(MATLABROOT)
+          cacheHitVar: MATLAB_CACHE_RESTORED
+        displayName: Cache MATLAB
+
+      # need to check inside extension
+      # condition: ne(variables.MATLAB_CACHE_RESTORED, 'true')
       - task: InstallMATLAB@1
-        # condition: ne(variables.CACHE_RESTORED, 'true')
 
       - task: RunMATLABCommand@1
         inputs:
           command: "fid = fopen('matlabroot.txt','w'); fprintf(fid, '%s', matlabroot); fclose(fid);"
+        # if cache restored not checked, the user will need to provide updated PATH at every step
         # env:
         #   PATH: "$(MATLABROOT)/bin:$(PATH)"
 
       - script: |
           MATLABROOT=$(tail -n 1 matlabroot.txt)
           echo "##vso[task.setvariable variable=MATLABROOT]$MATLABROOT"
-          echo $(MATLABROOT)
       - script: echo $(MATLABROOT)
 
       # Runs build to create MEX file and then run tests
