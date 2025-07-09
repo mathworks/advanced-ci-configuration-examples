@@ -34,9 +34,8 @@ jobs:
       - task: RunMATLABCommand@1
         inputs:
           command: "fid = fopen('matlabroot.txt','w'); fprintf(fid, '%s', matlabroot); fclose(fid);"
-        # if cache restored not checked, the user will need to provide updated PATH at every step
-        # env:
-        #   PATH: "$(MATLABROOT)/bin:$(PATH)"
+        env:
+          PATH: "$(MATLABROOT)/bin:$(PATH)"
 
       # - script: |
       #     MATLABROOT=$(tail -n 1 matlabroot.txt)
