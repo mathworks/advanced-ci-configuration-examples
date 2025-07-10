@@ -1,71 +1,71 @@
-jobs:
-  # This job compiles MEX files and runs tests across different platforms
-  - job: CompileAndTestMex
-    strategy:
-      matrix:
-        linux:
-          imageName: ubuntu-latest
-        mac:
-          imageName: macOS-latest
-        windows:
-          imageName: windows-latest
-    pool:
-      vmImage: $(imageName)
-    steps:
-      - task: InstallMATLAB@1
+# jobs:
+#   # This job compiles MEX files and runs tests across different platforms
+#   - job: CompileAndTestMex
+#     strategy:
+#       matrix:
+#         linux:
+#           imageName: ubuntu-latest
+#         mac:
+#           imageName: macOS-latest
+#         windows:
+#           imageName: windows-latest
+#     pool:
+#       vmImage: $(imageName)
+#     steps:
+#       - task: InstallMATLAB@1
       
-      # Runs build to create MEX file and then run tests
-      - task: RunMATLABBuild@1
-        inputs:
-          tasks: test
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+#       # Runs build to create MEX file and then run tests
+#       - task: RunMATLABBuild@1
+#         inputs:
+#           tasks: test
+#         env:
+#           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
-      # Uploads the test results
-      - publish: 'test-results/results.xml'
-        artifact: 'test-results-$(imageName)'
+#       # Uploads the test results
+#       - publish: 'test-results/results.xml'
+#         artifact: 'test-results-$(imageName)'
       
-      # Saves MEX files for the packaging job
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'toolbox'
-          Contents: '**/*.mex*'
-          TargetFolder: toolbox/tmpMexFolder
-      - publish: 'toolbox/tmpMexFolder'
-        artifact: mex-$(imageName)
+#       # Saves MEX files for the packaging job
+#       - task: CopyFiles@2
+#         inputs:
+#           SourceFolder: 'toolbox'
+#           Contents: '**/*.mex*'
+#           TargetFolder: toolbox/tmpMexFolder
+#       - publish: 'toolbox/tmpMexFolder'
+#         artifact: mex-$(imageName)
 
-  # This job packages and releases the toolbox after successful MEX compilation
-  - job: CreateAndReleaseToolbox
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-      - task: InstallMATLAB@1
+#   # This job packages and releases the toolbox after successful MEX compilation
+#   - job: CreateAndReleaseToolbox
+#     pool:
+#       vmImage: ubuntu-latest
+#     steps:
+#       - task: InstallMATLAB@1
       
-      # Downloads all mex files from previous job
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          itemPattern: 'mex-*/*'
-          targetPath: 'tmpMexFolder'
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'tmpMexFolder'
-          Contents: '**/*.mex*'
-          flattenFolders: true
-          targetFolder: 'toolbox'
+#       # Downloads all mex files from previous job
+#       - task: DownloadPipelineArtifact@2
+#         inputs:
+#           itemPattern: 'mex-*/*'
+#           targetPath: 'tmpMexFolder'
+#       - task: CopyFiles@2
+#         inputs:
+#           SourceFolder: 'tmpMexFolder'
+#           Contents: '**/*.mex*'
+#           flattenFolders: true
+#           targetFolder: 'toolbox'
       
-      # Packages all files in toolbox folder into a mltbx toolbox package
-      - task: RunMATLABBuild@1
-        inputs:
-          tasks: packageToolbox
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+#       # Packages all files in toolbox folder into a mltbx toolbox package
+#       - task: RunMATLABBuild@1
+#         inputs:
+#           tasks: packageToolbox
+#         env:
+#           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
-      # The packaged toolbox is distributed as a GitHub release
-      - task: GitHubRelease@1
-        inputs:
-          gitHubConnection: advanced-ci-configuration-examples
-          title: "Cross-Platform Array Product Toolbox"
-          assets: 'toolbox.mltbx'
-          tagSource: 'userSpecifiedTag'
-          tag: '$(Build.BuildNumber)'
-    dependsOn: CompileAndTestMex
+#       # The packaged toolbox is distributed as a GitHub release
+#       - task: GitHubRelease@1
+#         inputs:
+#           gitHubConnection: advanced-ci-configuration-examples
+#           title: "Cross-Platform Array Product Toolbox"
+#           assets: 'toolbox.mltbx'
+#           tagSource: 'userSpecifiedTag'
+#           tag: '$(Build.BuildNumber)'
+#     dependsOn: CompileAndTestMex
