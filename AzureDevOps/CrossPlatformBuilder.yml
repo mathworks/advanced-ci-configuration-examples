@@ -2,6 +2,7 @@ jobs:
   - job: BuildPythonPackage
     # Matrix strategy to run builds across different OS and MATLAB release combinations
     strategy:
+      parallel: 2
       matrix:
         # linux-R2024b:
         #   imageName: ubuntu-latest
