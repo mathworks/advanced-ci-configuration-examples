@@ -30,6 +30,13 @@ jobs:
           release: $(release)
           products: MATLAB_Compiler_SDK MATLAB_Test
 
+      - powershell: ./DistributeTests.ps1 
+        displayName: 'PowerShell Script to distribute tests'
+      
+      - script: |
+          echo $(MATLABTestFiles)
+      
+      
       - task: RunMATLABTests@1
         inputs:
           sourceFolder: src
