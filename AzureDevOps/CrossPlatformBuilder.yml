@@ -3,15 +3,15 @@ jobs:
     # Matrix strategy to run builds across different OS and MATLAB release combinations
     strategy:
       matrix:
-        linux-R2024b:
-          imageName: ubuntu-latest
-          release: R2024b
+        # linux-R2024b:
+        #   imageName: ubuntu-latest
+        #   release: R2024b
         # linux-R2025a:
         #   imageName: ubuntu-latest
         #   release: R2025a
-        mac-R2024b:
-          imageName: macOS-latest
-          release: R2024b
+        # mac-R2024b:
+        #   imageName: macOS-latest
+        #   release: R2024b
         # mac-R2025a:
         #   imageName: macOS-latest
         #   release: R2025a
