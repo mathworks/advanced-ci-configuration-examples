@@ -25,11 +25,11 @@ jobs:
     pool:
       vmImage: windows-latest
     steps:
-      # Install MATLAB and required products
-      # - task: InstallMATLAB@1
-      #   inputs:
-      #     release: $(release)
-      #     products: MATLAB_Compiler_SDK MATLAB_Test
+      Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          release: R2025a
+          products: MATLAB_Compiler_SDK MATLAB_Test
 
       - powershell: .\DistributeTests.ps1 
         displayName: 'PowerShell Script to distribute tests'
