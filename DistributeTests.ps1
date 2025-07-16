@@ -10,8 +10,8 @@
 #>
 
 $tests = Get-ChildItem .\tests -Filter "*.m" -Recurse | Select-Object -ExpandProperty FullName # search for test files with specific pattern.
-$totalAgents = [int]$Env:SYSTEM_TOTALJOBSINPHASE # standard VSTS variables available using parallel execution; total number of parallel jobs running
-$agentNumber = [int]$Env:SYSTEM_JOBPOSITIONINPHASE  # current job position
+$totalAgents = [int]$Env:CI_TOTAL # standard VSTS variables available using parallel execution; total number of parallel jobs running
+$agentNumber = [int]$Env:CI_INDEX  # current job position
 $testCount = $tests.Count
 
 # below conditions are used if parallel pipeline is not used. i.e. pipeline is running with single agent (no parallel configuration)

@@ -1,43 +1,39 @@
 jobs:
   - job: BuildPythonPackage
-    # Matrix strategy to run builds across different OS and MATLAB release combinations
     strategy:
-      parallel: 3
-      # matrix:
-        # linux-R2024b:
-        #   imageName: ubuntu-latest
-        #   release: R2024b
-        # linux-R2025a:
-        #   imageName: ubuntu-latest
-        #   release: R2025a
-        # mac-R2024b:
-        #   imageName: macOS-latest
-        #   release: R2024b
-        # mac-R2025a:
-        #   imageName: macOS-latest
-        #   release: R2025a
-        # windows-R2024b:
-        #   imageName: windows-latest
-        #   release: R2024b 
-        # windows-R2025a:
-        #   imageName: windows-latest
-        #   release: R2025a
+      matrix:
+        shard_0:
+          ci_index: 0
+          ci_total: 3
+          imageName: windows-latest
+          release: R2025a
+        shard_1:
+          ci_index: 1
+          ci_total: 3
+          imageName: windows-latest
+          release: R2025a
+        shard_2:
+          ci_index: 2
+          ci_total: 3
+          imageName: windows-latest
+          release: R2025a
     pool:
-      vmImage: windows-latest
+      vmImage: $(imageName)
     steps:
-      # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
-          release: R2025a
-          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+          release: $(release)
+          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test MATLAB_Coder
 
-      - powershell: .\DistributeTests.ps1 
+      - powershell: .\DistributeTests.ps1
         displayName: 'PowerShell Script to distribute tests'
-      
+        env:
+          CI_INDEX: $(ci_index)
+          CI_TOTAL: $(ci_total)
+
       - script: |
-          echo $(MATLABTestFiles)
-      
-      
+          echo MATLABTestFiles: $(MATLABTestFiles)
+
       - task: RunMATLABTests@1
         inputs:
           sourceFolder: src
@@ -45,28 +41,17 @@ jobs:
           testResultsPDF: test-results/results.pdf
           testResultsJUnit: test-results/results.xml
           codeCoverageCobertura: code-coverage/coverage.xml
+
       - task: PublishBuildArtifacts@1
         inputs:
           pathToPublish: test-results/results.pdf
+
       - task: PublishTestResults@2
         condition: succeededOrFailed()
         inputs:
           testResultsFiles: test-results/results.xml
+
       - task: PublishCodeCoverageResults@2
         inputs:
           codeCoverageTool: Cobertura
           summaryFileLocation: code-coverage/coverage.xml
-      
-      # # Builds Python package from MATLAB function and verifies functionality through equivalence tests
-      # - task: RunMATLABBuild@1
-      #   inputs:
-      #     tasks: equivalenceTest
-      #   env:
-      #     MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-      
-      # # Store the built Python package as an artifact
-      # - task: PublishBuildArtifacts@1
-      #   inputs:
-      #     PathtoPublish: KgToPoundsPythonBuild
-      #     ArtifactName: KgToPounds-$(release)-$(imageName)
-      #     publishLocation: Container
