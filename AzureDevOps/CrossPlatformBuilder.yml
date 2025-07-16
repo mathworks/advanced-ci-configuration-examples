@@ -42,6 +42,20 @@ jobs:
         inputs:
           sourceFolder: src
           selectByFolder: tests
+          testResultsPDF: test-results/results.pdf
+          testResultsJUnit: test-results/results.xml
+          codeCoverageCobertura: code-coverage/coverage.xml
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: test-results/results.pdf
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFiles: test-results/results.xml
+      - task: PublishCodeCoverageResults@2
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: code-coverage/coverage.xml
       
       # # Builds Python package from MATLAB function and verifies functionality through equivalence tests
       # - task: RunMATLABBuild@1
