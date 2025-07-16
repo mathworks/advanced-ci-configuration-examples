@@ -25,7 +25,7 @@ jobs:
     pool:
       vmImage: windows-latest
     steps:
-      Install MATLAB and required products
+      # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
           release: R2025a
