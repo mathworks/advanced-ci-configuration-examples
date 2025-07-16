@@ -29,7 +29,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           release: R2025a
-          products: MATLAB_Compiler_SDK MATLAB_Test
+          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
 
       - powershell: .\DistributeTests.ps1 
         displayName: 'PowerShell Script to distribute tests'
