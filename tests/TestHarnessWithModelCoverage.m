@@ -4,20 +4,20 @@ classdef TestHarnessWithModelCoverage < sltest.TestCase
 %   Copyright 2020 The MathWorks, Inc.
 
    methods (Test)
-       % function testOne(testCase)
-       %     in = testCase.createSimulationInput('simpleSwitchWithSubsystemIn', 'WithHarness','simpleSwitchWithSubsystemIn_Harness1');
-       % 
-       %     % Simulate the model 
-       %     simOut = testCase.simulate(in);
-       %     testCase.verifySignalsMatch(simOut,'baselineOne1.mat');
-       % end
-       % function testTwo(testCase)
-       %     in = testCase.createSimulationInput('simpleSwitchWithSubsystemIn', 'WithHarness','simpleSwitchWithSubsystemIn_Harness2');
-       % 
-       %     % Simulate the model 
-       %     simOut = testCase.simulate(in);
-       %     testCase.verifySignalsMatch(simOut,'baselineTwo.mat');
-       % end
+       function testOne(testCase)
+           in = testCase.createSimulationInput('simpleSwitchWithSubsystemIn', 'WithHarness','simpleSwitchWithSubsystemIn_Harness1');
+
+           % Simulate the model 
+           simOut = testCase.simulate(in);
+           testCase.verifySignalsMatch(simOut,'baselineOne1.mat');
+       end
+       function testTwo(testCase)
+           in = testCase.createSimulationInput('simpleSwitchWithSubsystemIn', 'WithHarness','simpleSwitchWithSubsystemIn_Harness2');
+
+           % Simulate the model 
+           simOut = testCase.simulate(in);
+           testCase.verifySignalsMatch(simOut,'baselineTwo.mat');
+       end
        function validateCalculationResult(testCase)
             actSolution = arrayProduct(5,[1.5, 2, 9]);
             expSolution = [7.5, 10, 45];

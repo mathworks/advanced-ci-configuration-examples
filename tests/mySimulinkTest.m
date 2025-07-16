@@ -1,14 +1,14 @@
 classdef mySimulinkTest < sltest.TestCase
    methods (Test)
-      % function testOne(testCase)
-      %    testCase.loadSystem...
-      %      ('sltestMATLABBasedTestExample');
-      %    evalin('base','gain2_var = 2.01;');
-      %    simOut = testCase.simulate...
-      %      ('sltestMATLABBasedTestExample');
-      %    testCase.verifySignalsMatch(simOut,'baselineOne.mat',...
-      %      'AbsTol',0.015);
-      % end
+      function testOne(testCase)
+         testCase.loadSystem...
+           ('sltestMATLABBasedTestExample');
+         evalin('base','gain2_var = 2.01;');
+         simOut = testCase.simulate...
+           ('sltestMATLABBasedTestExample');
+         testCase.verifySignalsMatch(simOut,'baselineOne.mat',...
+           'AbsTol',0.015);
+      end
       function validateCalculationResult(testCase)
             actSolution = arrayProduct(5,[1.5, 2, 9]);
             expSolution = [7.5, 10, 45];
