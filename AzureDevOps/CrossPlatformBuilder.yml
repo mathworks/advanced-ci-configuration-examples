@@ -1,55 +1,39 @@
 jobs:
   - job: BuildPythonPackage
-    strategy:
-      matrix:
-        shard_0:
-          ci_index: 0
-          ci_total: 3
-          imageName: windows-latest
-          release: R2025a
-        shard_1:
-          ci_index: 1
-          ci_total: 3
-          imageName: windows-latest
-          release: R2025a
-        shard_2:
-          ci_index: 2
-          ci_total: 3
-          imageName: windows-latest
-          release: R2025a
     pool:
-      vmImage: $(imageName)
+      vmImage: 'windows-latest'
     steps:
-      - task: InstallMATLAB@1
-        inputs:
-          release: $(release)
-          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test MATLAB_Coder
+      # - task: InstallMATLAB@1
+      #   inputs:
+      #     release: $(release)
+      #     products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test MATLAB_Coder
 
-      - powershell: .\DistributeTests.ps1
-        displayName: 'PowerShell Script to distribute tests'
-        env:
-          CI_INDEX: $(ci_index)
-          CI_TOTAL: $(ci_total)
+      - powershell: |
+          Write-Host "Total Jobs in Phase: $Env:SYSTEM_TOTALJOBSINPHASE"
+        displayName: 'Print system var'
+      - powershell: |
+          Write-Host "Total Jobs in Phase: $Env:SYSTEM_JOBPOSITIONINPHASE"
+        displayName: 'Print position var '
 
-      - script: |
-          echo MATLABTestFiles: $(MATLABTestFiles)
+      # - script: |
+      #     echo MATLABTestFiles: $(MATLABTestFiles)
 
-      - task: RunMATLABTests@1
-        inputs:
-          sourceFolder: src
-          selectByFolder: tests
-          testResultsPDF: test-results/results.pdf
-          testResultsJUnit: test-results/results.xml
-          codeCoverageCobertura: code-coverage/coverage.xml
+      # - task: RunMATLABTests@1
+      #   inputs:
+      #     sourceFolder: src
+      #     selectByFolder: tests
+      #     testResultsPDF: test-results/results.pdf
+      #     testResultsJUnit: test-results/results.xml
+      #     codeCoverageCobertura: code-coverage/coverage.xml
 
-      - task: PublishBuildArtifacts@1
-        inputs:
-          pathToPublish: test-results/results.pdf
+      # - task: PublishBuildArtifacts@1
+      #   inputs:
+      #     pathToPublish: test-results/results.pdf
 
-      - task: PublishTestResults@2
-        condition: succeededOrFailed()
-        inputs:
-          testResultsFiles: test-results/results.xml
+      # - task: PublishTestResults@2
+      #   condition: succeededOrFailed()
+      #   inputs:
+      #     testResultsFiles: test-results/results.xml
 
       - task: PublishCodeCoverageResults@2
         inputs:
