@@ -24,7 +24,7 @@ jobs:
         displayName: 'Download matlab-batch for Windows'
 
       - script: |
-          ./matlab-batch runtests($(MATLABTestFiles))
+           matlab-batch.exe runtests($(MATLABTestFiles))
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
