@@ -56,7 +56,7 @@ jobs:
           release: R2025a
           products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
 
-      - bah: ./DistributeTests.sh 
+      - bash: ./DistributeTests.sh 
         displayName: 'Bash Script to distribute tests'
 
       - script: |
