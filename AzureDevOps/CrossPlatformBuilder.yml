@@ -1,9 +1,4 @@
 jobs:
-  - job: BuildPythonPackage
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-      # - task: InstallMATLAB@1jobs:
   - job: ParallelWindows
     # Matrix strategy to run builds across different OS and MATLAB release combinations
     strategy:
@@ -69,38 +64,3 @@ jobs:
 
       - script: |
           matlab -batch runtests($(MATLABTestFiles))      
-      #   inputs:
-      #     release: $(release)
-      #     products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test MATLAB_Coder
-
-      - powershell: |
-          Write-Host "Total Jobs in Phase: $Env:SYSTEM_TOTALJOBSINPHASE"
-        displayName: 'Print system var'
-      - powershell: |
-          Write-Host "Total Jobs in Phase: $Env:SYSTEM_JOBPOSITIONINPHASE"
-        displayName: 'Print position var '
-
-      # - script: |
-      #     echo MATLABTestFiles: $(MATLABTestFiles)
-
-      # - task: RunMATLABTests@1
-      #   inputs:
-      #     sourceFolder: src
-      #     selectByFolder: tests
-      #     testResultsPDF: test-results/results.pdf
-      #     testResultsJUnit: test-results/results.xml
-      #     codeCoverageCobertura: code-coverage/coverage.xml
-
-      # - task: PublishBuildArtifacts@1
-      #   inputs:
-      #     pathToPublish: test-results/results.pdf
-
-      # - task: PublishTestResults@2
-      #   condition: succeededOrFailed()
-      #   inputs:
-      #     testResultsFiles: test-results/results.xml
-
-      - task: PublishCodeCoverageResults@2
-        inputs:
-          codeCoverageTool: Cobertura
-          summaryFileLocation: code-coverage/coverage.xml
