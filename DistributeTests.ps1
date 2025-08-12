@@ -1,44 +1,39 @@
-<#  
-.SYNOPSIS  
-    Distribute the tests in VSTS pipeline across multiple agents 
-.DESCRIPTION  
-    This script slices tests files across multiple agents for faster execution.
-    We search for specific type of file structure (in this example test*), and slice them according to agent number
-    If we encounter multiple files [file1..file10] and if we have 2 agents, agent1 executes tests odd number of files while agent2 executes even number of files
-    For detalied slicing info: https://docs.microsoft.com/en-us/vsts/pipelines/test/parallel-testing-any-test-runner
-    We use JUnit style test results to publish the test reports.
-#>
+#!/usr/bin/env bash
+# Distribute tests across multiple agents for parallel execution (Bash version)
+# Produces MATLAB cell array like:
+# {'/path/to/file1.m','/path/to/file2.m'}
 
-$tests = Get-ChildItem .\tests -Filter "*.m" -Recurse | Select-Object -ExpandProperty FullName # search for test files with specific pattern.
-$totalAgents = [int]$Env:CI_TOTAL # standard VSTS variables available using parallel execution; total number of parallel jobs running
-$agentNumber = [int]$Env:CI_INDEX  # current job position
-$testCount = $tests.Count
+# Find all test files (*.m) under ./tests
+mapfile -t tests < <(find ./tests -type f -name "*.m" | sort)
 
-# below conditions are used if parallel pipeline is not used. i.e. pipeline is running with single agent (no parallel configuration)
-if ($totalAgents -eq 0) {
-    $totalAgents = 1
-}
-if (!$agentNumber -or $agentNumber -eq 0) {
-    $agentNumber = 1
-}
+totalAgents=${CI_TOTAL:-1}   # Default to 1 if not set
+agentNumber=${CI_INDEX:-1}   # Default to 1 if not set
+testCount=${#tests[@]}
 
-Write-Host "Total agents: $totalAgents"
-Write-Host "Agent number: $agentNumber"
-Write-Host "Total tests: $testCount"
+echo "Total agents: $totalAgents"
+echo "Agent number: $agentNumber"
+echo "Total tests: $testCount"
 
-$testsToRun= @()
+testsToRun=()
 
-# slice test files to make sure each agent gets unique test file to execute
-For ($i=$agentNumber; $i -le $testCount;) {
-    $file = $tests[$i-1]
-    $formattedTests += "`"$file`""
-    Write-Host "Added $file"
-    $i = $i + $totalAgents 
- }
+# Slice test files so each agent gets unique tests
+for (( i=agentNumber; i<=testCount; i+=totalAgents )); do
+    file="${tests[i-1]}"
+    testsToRun+=("$file")
+    echo "Added $file"
+done
 
-# join all test files seperated by space. pytest runs multiple test files in following format pytest test1.py test2.py test3.py
-$joined = '[{0}]' -f ($formattedTests -join ', ')
-Write-Host "Final test file list: $joined"
-# write these files into variable so that we can run them using pytest in subsequent task. 
-Write-Host "##vso[task.setvariable variable=MATLABTestFiles;]$joined"
- 
+# Format as MATLAB cell array: {'file1','file2'}
+joined="{"
+for idx in "${!testsToRun[@]}"; do
+    if [[ $idx -gt 0 ]]; then
+        joined+=","
+    fi
+    joined+="'${testsToRun[$idx]}'"
+done
+joined+="}"
+
+echo "Final test file list (MATLAB cell array): $joined"
+
+# Set as Azure Pipelines variable
+echo "##vso[task.setvariable variable=MATLABTestFiles;]$joined"
