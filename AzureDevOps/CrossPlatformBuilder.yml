@@ -10,7 +10,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           release: R2025a
-          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+          products: MATLAB_Test Simulink_Test
 
       - powershell: .\DistributeTests.ps1 
         displayName: 'PowerShell Script to distribute tests'
@@ -41,7 +41,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           release: R2025a
-          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+          products: MATLAB_Test Simulink_Test
 
       - bash: chmod +x  DistributeTests.sh && ./DistributeTests.sh
         displayName: 'Bash Script to distribute tests'
@@ -53,7 +53,7 @@ jobs:
       - bash: |
           curl -L "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/glnxa64/matlab-batch" -o matlab-batch
           chmod +x matlab-batch
-          ./matlab-batch "runtests($(MATLABTestFiles))""
+          ./matlab-batch "runtests($(MATLABTestFiles))"
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
         displayName: 'Download matlab-batch for Linux'
@@ -69,7 +69,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           release: R2025a
-          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+          products: MATLAB_Test Simulink_Test
 
       - bash: chmod +x  DistributeTests.sh && ./DistributeTests.sh 
         displayName: 'Bash Script to distribute tests'
