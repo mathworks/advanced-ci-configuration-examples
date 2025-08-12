@@ -16,7 +16,9 @@ jobs:
         displayName: 'PowerShell Script to distribute tests'
 
       - script: |
-          echo $(MATLABTestFiles)
+          echo $(MLM_LICENSE_TOKEN)
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
        # Download matlab-batch.exe for Windows
       - powershell: |
