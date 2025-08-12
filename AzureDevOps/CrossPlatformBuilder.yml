@@ -49,15 +49,14 @@ jobs:
       - script: |
           echo $(MATLABTestFiles)
 
-      # Linux job
+      # Download matlab-batch for Linux
       - bash: |
-          set -e
-          curl -L "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/glnxa64/matlab-batch" -o "$HOME/matlab-batch"
-          chmod +x "$HOME/matlab-batch"
-          "$HOME/matlab-batch" runtests($(MATLABTestFiles))
+          curl -L "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/glnxa64/matlab-batch" -o matlab-batch
+          chmod +x matlab-batch
+          ./matlab-batch runtests($(MATLABTestFiles))
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-        displayName: 'Download and run matlab-batch for Linux'
+        displayName: 'Download matlab-batch for Linux'
 
   - job: ParallelMac
     # Matrix strategy to run builds across different OS and MATLAB release combinations
@@ -78,12 +77,11 @@ jobs:
       - script: |
           echo $(MATLABTestFiles)
 
-      # Mac job
+      # Download matlab-batch for macOS
       - bash: |
-          set -e
-          curl -L "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/maci64/matlab-batch" -o "$HOME/matlab-batch"
-          chmod +x "$HOME/matlab-batch"
-          "$HOME/matlab-batch" runtests($(MATLABTestFiles))
+          curl -L "https://ssd.mathworks.com/supportfiles/ci/matlab-batch/v1/maci64/matlab-batch" -o matlab-batch
+          chmod +x matlab-batch
+          ./matlab-batch runtests($(MATLABTestFiles))
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-        displayName: 'Download and run matlab-batch for macOS'
+        displayName: 'Download matlab-batch for macOS'    
