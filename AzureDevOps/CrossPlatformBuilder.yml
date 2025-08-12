@@ -32,8 +32,8 @@ jobs:
 
   - job: ParallelLinux
     # Matrix strategy to run builds across different OS and MATLAB release combinations
-    strategy:
-      parallel: 3
+    # strategy:
+    #   parallel: 3
     pool:
       vmImage: ubuntu-latest
     steps:
@@ -43,7 +43,7 @@ jobs:
           release: R2025a
           products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
 
-      - bash: ./DistributeTests.sh
+      - bash: chmod +x  DistributeTests.sh && ./DistributeTests.sh
         displayName: 'Bash Script to distribute tests'
 
       - script: |
@@ -61,8 +61,8 @@ jobs:
 
   - job: ParallelMac
     # Matrix strategy to run builds across different OS and MATLAB release combinations
-    strategy:
-      parallel: 3
+    # strategy:
+    #   parallel: 3
     pool:
       vmImage: macOS-latest
     steps:
@@ -72,7 +72,7 @@ jobs:
           release: R2025a
           products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
 
-      - bash: ./DistributeTests.sh 
+      - bash: chmod +x  DistributeTests.sh && ./DistributeTests.sh 
         displayName: 'Bash Script to distribute tests'
 
       - script: |
