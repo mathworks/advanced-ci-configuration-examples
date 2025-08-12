@@ -1,4 +1,10 @@
 classdef arrayProductTest < matlab.unittest.TestCase
+    methods (TestClassSetup)
+        function addTestContentToPath(testCase)
+            addpath(fullfile(fileparts(pwd),'src')); 
+             pause(10);
+        end
+    end
     methods(Test)
         function validateCalculationResult(testCase)
             actSolution = arrayProduct(5,[1.5, 2, 9]);

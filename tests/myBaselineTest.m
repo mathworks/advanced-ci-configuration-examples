@@ -1,4 +1,10 @@
 classdef myBaselineTest < sltest.TestCase
+    methods (TestClassSetup)
+        function addTestContentToPath(testCase)
+            addpath(fullfile(fileparts(pwd),'src')); 
+             pause(10);
+        end
+    end
     methods (Test)
       function testOne(testCase)
          testCase.loadSystem...

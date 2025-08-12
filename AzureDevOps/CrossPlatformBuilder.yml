@@ -3,7 +3,72 @@ jobs:
     pool:
       vmImage: 'windows-latest'
     steps:
-      # - task: InstallMATLAB@1
+      # - task: InstallMATLAB@1jobs:
+  - job: ParallelWindows
+    # Matrix strategy to run builds across different OS and MATLAB release combinations
+    strategy:
+      parallel: 3
+    pool:
+      vmImage: windows-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          release: R2025a
+          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+
+      - powershell: .\DistributeTests.ps1 
+        displayName: 'PowerShell Script to distribute tests'
+
+      - script: |
+          echo $(MATLABTestFiles)
+
+      - script: |
+          matlab -batch runtests($(MATLABTestFiles))
+
+  - job: ParallelLinux
+    # Matrix strategy to run builds across different OS and MATLAB release combinations
+    strategy:
+      parallel: 3
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          release: R2025a
+          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+
+      - bash: ./DistributeTests.sh
+        displayName: 'Bash Script to distribute tests'
+
+      - script: |
+          echo $(MATLABTestFiles)
+
+      - script: |
+          matlab -batch runtests($(MATLABTestFiles))
+
+  - job: ParallelMac
+    # Matrix strategy to run builds across different OS and MATLAB release combinations
+    strategy:
+      parallel: 3
+    pool:
+      vmImage: macOS-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          release: R2025a
+          products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test
+
+      - bah: ./DistributeTests.sh 
+        displayName: 'Bash Script to distribute tests'
+
+      - script: |
+          echo $(MATLABTestFiles)
+
+      - script: |
+          matlab -batch runtests($(MATLABTestFiles))      
       #   inputs:
       #     release: $(release)
       #     products: MATLAB_Compiler_SDK MATLAB_Test Simulink_Test MATLAB_Coder
