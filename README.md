@@ -64,6 +64,8 @@ To license products that are not automatically licensed, you can request a [MATL
 - [Continuous Integration (CI) configuration examples for MATLAB](https://github.com/mathworks/ci-configuration-examples)
 - [Continuous Integration with MATLAB and Simulink<sup>&reg;</sup>](https://www.mathworks.com/solutions/continuous-integration.html)
 
+<br>
+
 ## Feedback and Support
 If you encounter a product licensing issue, consider requesting a MATLAB batch licensing token to use in your workflow. For more information, see [Licensing](#licensing).
 
