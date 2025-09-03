@@ -51,10 +51,12 @@ That's really it!
 <br>
 
 ## Licensing
-Product licensing for your workflow depends on your project visibility as well as the type of products to install:
+Product licensing for your workflow depends on your project visibility as well as the types of products the workflow uses:
 
-- Public project — If your workflow does not include transformation products, such as MATLAB Coder&trade; and MATLAB Compiler, then MathWorks<sup>&reg;</sup> automatically licenses any products that you install. If your workflow includes transformation products, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
-- Private project — MathWorks does not automatically license any products for you. You can request a batch licensing token by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form.
+- Public project — The CI integration for MATLAB automatically licenses all products for you, except for transformation products, such as MATLAB Coder&trade; and MATLAB Compiler&trade;.
+- Private project — The CI integration does not automatically license any products for you. 
+
+To license products that are not automatically licensed, you can request a [MATLAB batch licensing token](https://github.com/mathworks-ref-arch/matlab-dockerfile/blob/main/alternates/non-interactive/MATLAB-BATCH.md#matlab-batch-licensing-token) by submitting the [MATLAB Batch Licensing Pilot](https://www.mathworks.com/support/batch-tokens.html) form. Batch licensing tokens are strings that enable MATLAB to start in noninteractive environments.
 
 <br>
 
@@ -62,5 +64,11 @@ Product licensing for your workflow depends on your project visibility as well a
 - [Continuous Integration (CI) configuration examples for MATLAB](https://github.com/mathworks/ci-configuration-examples)
 - [Continuous Integration with MATLAB and Simulink<sup>&reg;</sup>](https://www.mathworks.com/solutions/continuous-integration.html)
 
-## Contact Us
-If you have any questions or suggestions, contact MathWorks at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
+<br>
+
+## Feedback and Support
+If you encounter a product licensing issue, consider requesting a MATLAB batch licensing token to use in your workflow. For more information, see [Licensing](#licensing).
+
+If you have an enhancement request or other feedback, create an issue on the [Issues](https://github.com/mathworks/advanced-ci-configuration-examples/issues) page.
+
+For support, contact [MathWorks Technical Support](https://www.mathworks.com/support/contact_us.html).
