@@ -12,15 +12,15 @@ jobs:
           release: R2025a
           products: MATLAB_Test Simulink_Test
 
-      - powershell: .\AzureDevOps\DistributeTests.ps1 
+      - powershell: .\AzureDevOps\DistributeTests.ps1
         displayName: 'PowerShell Script to distribute tests'
 
       - task: RunMATLABTests@1
         inputs:
           selectByName: $(MATLABTestFiles)
-          sourceFolder: 
+          sourceFolder: src
         env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)        
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
   - job: ParallelLinux
     # Parallel strategy to run tests in parallel
@@ -41,7 +41,7 @@ jobs:
       - task: RunMATLABTests@1
         inputs:
           selectByName: $(MATLABTestFiles)
-          sourceFolder: 
+          sourceFolder: src
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
 
@@ -64,6 +64,6 @@ jobs:
       - task: RunMATLABTests@1
         inputs:
           selectByName: $(MATLABTestFiles)
-          sourceFolder: 
+          sourceFolder: src
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)       
