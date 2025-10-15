@@ -9,7 +9,7 @@
     We use JUnit style test results to publish the test reports.
 #>
 
-$tests = Get-ChildItem .\ -Filter "test*" # search for test files with specific pattern.
+$tests = Get-ChildItem .\tests\ -File # search for test files with specific pattern.
 $totalAgents = [int]$Env:SYSTEM_TOTALJOBSINPHASE # standard VSTS variables available using parallel execution; total number of parallel jobs running
 $agentNumber = [int]$Env:SYSTEM_JOBPOSITIONINPHASE  # current job position
 $testCount = $tests.Count
