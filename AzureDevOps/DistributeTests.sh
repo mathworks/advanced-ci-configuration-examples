@@ -4,7 +4,11 @@
 # {'/path/to/file1.m','/path/to/file2.m'}
 
 # Find all test files (*.m) under ./tests
-mapfile -t tests < <(find ./tests -type f -name "*.m" | sort)
+# mapfile -t tests < <(find ./tests -type f -name "*.m" | sort) mapfile doesnt work on macOS bash 3.2
+tests=()
+while IFS= read -r file; do
+    tests+=("$file")
+done < <(find ./tests -type f -name "*.m" | sort)
 
 # Use Azure DevOps variables if available, else default to 1
 totalAgents=${SYSTEM_TOTALJOBSINPHASE:-1}
