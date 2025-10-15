@@ -33,7 +33,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           release: R2025a
-          products: MATLAB_Test Simulink_Test
+          # products: MATLAB_Test Simulink_Test
 
       - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
         displayName: 'Bash Script to distribute tests'
