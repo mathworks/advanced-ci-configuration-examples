@@ -1,26 +1,26 @@
 jobs:
-  # - job: ParallelWindows
-  #   # Parallel strategy to run tests in parallel
-  #   strategy:
-  #     parallel: 2
-  #   pool:
-  #     vmImage: windows-latest
-  #   steps:
-  #     # Install MATLAB and required products
-  #     - task: InstallMATLAB@1
-  #       inputs:
-  #         release: R2025a
-  #         products: MATLAB_Test Simulink_Test
+  - job: ParallelWindows
+    # Parallel strategy to run tests in parallel
+    strategy:
+      parallel: 2
+    pool:
+      vmImage: windows-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          release: R2025a
+          products: MATLAB_Test Simulink_Test
 
-  #     - powershell: .\AzureDevOps\DistributeTests.ps1
-  #       displayName: 'PowerShell Script to distribute tests'
+      - powershell: .\AzureDevOps\DistributeTests.ps1
+        displayName: 'PowerShell Script to distribute tests'
 
-  #     - task: RunMATLABTests@1
-  #       inputs:
-  #         selectByName: $(MATLABTestFiles)
-  #         sourceFolder: src
-  #       env:
-  #         MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      - task: RunMATLABTests@1
+        inputs:
+          selectByName: $(MATLABTestFiles)
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
   - job: ParallelLinux
     # Parallel strategy to run tests in parallel
