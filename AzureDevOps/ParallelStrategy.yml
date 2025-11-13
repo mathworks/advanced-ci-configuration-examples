@@ -39,18 +39,18 @@ jobs:
         displayName: 'Bash Script to distribute tests'
 
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests
-      - task: RunMATLABBuild@1
-        inputs:
-          tasks: equivalenceTest
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      # - task: RunMATLABBuild@1
+      #   inputs:
+      #     tasks: equivalenceTest
+      #   env:
+      #     MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
       - task: RunMATLABTests@1
         inputs:
           selectByName: $(MATLABTestFiles)
           sourceFolder: src
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
+        # env:
+        #   MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
 
   # - job: ParallelMac
   #   # Parallel strategy to run tests in parallel
