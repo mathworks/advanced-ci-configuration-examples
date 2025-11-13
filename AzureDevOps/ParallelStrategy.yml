@@ -9,16 +9,16 @@ jobs:
       # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
-          products: MATLAB_Compiler_SDK MATLAB_Test
-
-      - powershell: .\AzureDevOps\DistributeTests.ps1
-        displayName: 'PowerShell Script to distribute tests'
+          products: MATLAB_Compiler_SDK MATLAB_Test 
 
       - task: RunMATLABBuild@1
         inputs:
           tasks: equivalenceTest
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - powershell: .\AzureDevOps\DistributeTests.ps1
+        displayName: 'PowerShell Script to distribute tests'
       
       - task: RunMATLABTests@1
         inputs:
@@ -39,15 +39,15 @@ jobs:
         inputs:
           products: MATLAB_Compiler_SDK MATLAB_Test
 
-      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
-        displayName: 'Bash Script to distribute tests'
-
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests
       - task: RunMATLABBuild@1
         inputs:
           tasks: equivalenceTest
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+        displayName: 'Bash Script to distribute tests'
       
       - task: RunMATLABTests@1
         inputs:
@@ -68,14 +68,14 @@ jobs:
         inputs:
           products: MATLAB_Compiler_SDK MATLAB_Test
 
-      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
-        displayName: 'Bash Script to distribute tests'
-
       - task: RunMATLABBuild@1
         inputs:
           tasks: equivalenceTest
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+        displayName: 'Bash Script to distribute tests'
       
       - task: RunMATLABTests@1
         inputs:
