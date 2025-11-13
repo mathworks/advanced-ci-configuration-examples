@@ -6,7 +6,6 @@
     We search for specific type of file structure (in this example test*), and slice them according to agent number
     If we encounter multiple files [file1..file10] and if we have 2 agents, agent1 executes tests odd number of files while agent2 executes even number of files
     For detalied slicing info: https://docs.microsoft.com/en-us/vsts/pipelines/test/parallel-testing-any-test-runner
-    We use JUnit style test results to publish the test reports.
 #>
 
 $tests = Get-ChildItem .\tests\ -File # search for test files with specific pattern.
@@ -38,7 +37,7 @@ For ($i=$agentNumber; $i -le $testCount;) {
     $i = $i + $totalAgents 
  }
 
-# join all test files seperated by space. pytest runs multiple test files in following format pytest test1.py test2.py test3.py
+# join all test files seperated by space.
 $testFiles = $testsToRun -Join " "
 Write-Host "Test files $testFiles"
 # write these files into variable so that we can run them using pytest in subsequent task. 

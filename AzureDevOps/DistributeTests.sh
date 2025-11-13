@@ -1,25 +1,31 @@
-#!/usr/bin/env bash
-# Distribute tests across multiple agents for parallel execution (Bash version)
-# Produces MATLAB cell array like:
-# {'/path/to/file1.m','/path/to/file2.m'}
+#!/bin/bash
+#===============================================================================
+#
+#          FILE:  distribute_tests.sh
+#
+#         USAGE:  ./distribute_tests.sh
+#
+#   DESCRIPTION:  This script slices tests files across multiple agents for faster execution.
+#                 We search for specific type of file structure (in this example test*), and slice them according to agent number
+#                 If we encounter multiple files [file1..file10] and if we have 2 agents, agent1 executes tests odd number of files while agent2 executes even number of files
+#
+#===============================================================================
 
-# Find all test files (*.m) under ./tests
-# mapfile -t tests < <(find ./tests -type f -name "*.m" | sort) mapfile doesnt work on macOS bash 3.2
 tests=()
 while IFS= read -r file; do
     tests+=("$file")
 done < <(find ./tests -type f -name "*.m" | sort)
 
-# Use Azure DevOps variables if available, else default to 1
-totalAgents=${SYSTEM_TOTALJOBSINPHASE:-1}
-agentNumber=${SYSTEM_JOBPOSITIONINPHASE:-1}
+# Use Azure DevOps variables
+totalAgents=${SYSTEM_TOTALJOBSINPHASE}
+agentNumber=${SYSTEM_JOBPOSITIONINPHASE}
 testCount=${#tests[@]}
 
-# If not set or zero, default to 1
-if [[ -z "$totalAgents" || "$totalAgents" -eq 0 ]]; then
+if [ $totalAgents -eq 0 ]; then
     totalAgents=1
 fi
-if [[ -z "$agentNumber" || "$agentNumber" -eq 0 ]]; then
+# below conditions are used if parallel pipeline is not used. i.e. pipeline is running with single agent (no parallel configuration)
+if [ -z $agentNumber ]; then
     agentNumber=1
 fi
 
