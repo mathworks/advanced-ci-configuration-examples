@@ -48,7 +48,7 @@ jobs:
       - task: RunMATLABTests@1
         inputs:
           selectByName: $(MATLABTestFiles)
-          sourceFolder: src
+          # sourceFolder: src
         # env:
         #   MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
 
