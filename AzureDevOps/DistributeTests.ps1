@@ -31,7 +31,9 @@ $testsToRun= @()
 # slice test files to make sure each agent gets unique test file to execute
 For ($i=$agentNumber; $i -le $testCount;) {
     $file = $tests[$i-1]
-    $testsToRun = $testsToRun + $file
+
+    $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
+    $testsToRun += "$base/*"
     Write-Host "Added $file"
     $i = $i + $totalAgents 
  }
