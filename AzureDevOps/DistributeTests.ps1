@@ -40,4 +40,4 @@ For ($i=$agentNumber; $i -le $testCount;) {
 $testFiles = $testsToRun -Join " "
 Write-Host "Test files $testFiles"
 # write these files into variable so that we can run them using pytest in subsequent task. 
-Write-Host "##vso[task.setvariable variable=pytestfiles;]$testFiles" 
+Write-Host "##vso[task.setvariable variable=MATLABTestFiles;]$testFiles" 

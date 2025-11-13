@@ -41,4 +41,4 @@ testFiles="${testsToRun[*]}"
 echo "Test files $testFiles"
 
 # Set as Azure Pipelines variable
-echo "##vso[task.setvariable variable=pytestfiles;]$testFiles"
+echo "##vso[task.setvariable variable=MATLABTestFiles;]$testFiles"
