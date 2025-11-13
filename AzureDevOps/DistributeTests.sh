@@ -32,8 +32,10 @@ testsToRun=()
 # Slice test files so each agent gets unique files (1-based index)
 for (( i=agentNumber; i<=testCount; i+=totalAgents )); do
     file="${tests[i-1]}"
-    testsToRun+=("$file")
-    echo "Added $file"
+
+    fileName=$(basename "$file" .m)
+    testsToRun+=("${fileName}/*")
+    echo "Added $fileName"
 done
 
 # Join all test files separated by space
