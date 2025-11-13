@@ -45,7 +45,7 @@ jobs:
           tasks: equivalenceTest
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-      
+
       - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
         displayName: 'Bash Script to distribute tests'
       
