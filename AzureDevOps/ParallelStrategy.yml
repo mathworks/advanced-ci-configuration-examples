@@ -48,9 +48,9 @@ jobs:
       - task: RunMATLABTests@1
         inputs:
           selectByName: $(MATLABTestFiles)
-          # sourceFolder: src
-        # env:
-        #   MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
 
   # - job: ParallelMac
   #   # Parallel strategy to run tests in parallel
