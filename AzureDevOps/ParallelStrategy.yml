@@ -1,26 +1,31 @@
 jobs:
-  # - job: ParallelWindows
-  #   # Parallel strategy to run tests in parallel
-  #   strategy:
-  #     parallel: 2
-  #   pool:
-  #     vmImage: windows-latest
-  #   steps:
-  #     # Install MATLAB and required products
-  #     - task: InstallMATLAB@1
-  #       inputs:
-  #         release: R2025a
-  #         products: MATLAB_Test Simulink_Test
+  - job: ParallelWindows
+    # Parallel strategy to run tests in parallel
+    strategy:
+      parallel: 2
+    pool:
+      vmImage: windows-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          products: MATLAB_Compiler_SDK MATLAB_Test
 
-  #     - powershell: .\AzureDevOps\DistributeTests.ps1
-  #       displayName: 'PowerShell Script to distribute tests'
+      - powershell: .\AzureDevOps\DistributeTests.ps1
+        displayName: 'PowerShell Script to distribute tests'
 
-  #     - task: RunMATLABTests@1
-  #       inputs:
-  #         selectByName: $(MATLABTestFiles)
-  #         sourceFolder: src
-  #       env:
-  #         MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: equivalenceTest
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - task: RunMATLABTests@1
+        inputs:
+          selectByName: $(MATLABTestFiles)
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
   - job: ParallelLinux
     # Parallel strategy to run tests in parallel
@@ -32,7 +37,6 @@ jobs:
       # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
-          release: R2025a
           products: MATLAB_Compiler_SDK MATLAB_Test
 
       - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
@@ -52,25 +56,30 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
 
-  # - job: ParallelMac
-  #   # Parallel strategy to run tests in parallel
-  #   strategy:
-    #   parallel: 2
-    # pool:
-    #   vmImage: macOS-latest
-    # steps:
-    #   # Install MATLAB and required products
-    #   - task: InstallMATLAB@1
-    #     inputs:
-    #       release: R2025a
-    #       products: MATLAB_Test Simulink_Test
+  - job: ParallelMac
+    # Parallel strategy to run tests in parallel
+    strategy:
+      parallel: 2
+    pool:
+      vmImage: macOS-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          products: MATLAB_Compiler_SDK MATLAB_Test
 
-    #   - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
-    #     displayName: 'Bash Script to distribute tests'
+      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+        displayName: 'Bash Script to distribute tests'
 
-    #   - task: RunMATLABTests@1
-    #     inputs:
-    #       selectByName: $(MATLABTestFiles)
-    #       sourceFolder: src
-    #     env:
-    #       MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)       
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: equivalenceTest
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - task: RunMATLABTests@1
+        inputs:
+          selectByName: $(MATLABTestFiles)
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)       
