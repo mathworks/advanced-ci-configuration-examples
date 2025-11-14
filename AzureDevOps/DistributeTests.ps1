@@ -32,7 +32,7 @@ For ($i=$agentNumber; $i -le $testCount;) {
     $file = $tests[$i-1]
 
     $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
-    $testsToRun += "$base/*"
+    $testsToRun += "$fileName/*"
     Write-Host "Added $file"
     $i = $i + $totalAgents 
  }
