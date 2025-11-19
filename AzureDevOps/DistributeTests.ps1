@@ -1,19 +1,20 @@
 <#  
 .SYNOPSIS  
-    Distribute the tests in VSTS pipeline across multiple agents 
+    Distribute tests across multiple agents in VSTS pipeline 
 .DESCRIPTION  
-    This script slices tests files across multiple agents for faster execution.
-    We search for specific type of file structure (in this example test*), and slice them according to agent number
-    If we encounter multiple files [file1..file10] and if we have 2 agents, agent1 executes tests odd number of files while agent2 executes even number of files
-    For detalied slicing info: https://docs.microsoft.com/en-us/vsts/pipelines/test/parallel-testing-any-test-runner
+    This script divides test files among multiple agents for faster execution. It searches for files matching a specific pattern (for example, `test*`) and assigns them based on the agent number.
+    For example, if there are multiple files [test1..test10] and 2 agents:
+        - Agent 1 runs tests from odd-numbered files.
+        - Agent 2 runs tests from even-numbered files.
+    For detailed slicing information, see https://docs.microsoft.com/en-us/vsts/pipelines/test/parallel-testing-any-test-runner
 #>
 
-$tests = Get-ChildItem .\tests\ -File # search for test files with specific pattern.
-$totalAgents = [int]$Env:SYSTEM_TOTALJOBSINPHASE # standard VSTS variables available using parallel execution; total number of parallel jobs running
-$agentNumber = [int]$Env:SYSTEM_JOBPOSITIONINPHASE  # current job position
+$tests = Get-ChildItem .\tests\ -Filter *.m -File # Search for test files matching the specified pattern
+$totalAgents = [int]$Env:SYSTEM_TOTALJOBSINPHASE # Standard VSTS variable containing the number of parallel jobs
+$agentNumber = [int]$Env:SYSTEM_JOBPOSITIONINPHASE  # Current job position
 $testCount = $tests.Count
 
-# below conditions are used if parallel pipeline is not used. i.e. pipeline is running with single agent (no parallel configuration)
+# Handle cases where the pipeline runs without parallel configuration (single agent)
 if ($totalAgents -eq 0) {
     $totalAgents = 1
 }
@@ -27,18 +28,17 @@ Write-Host "Total tests: $testCount"
 
 $testsToRun= @()
 
-# slice test files to make sure each agent gets unique test file to execute
+# Slice test files so each agent gets a unique set of files to execute
 For ($i=$agentNumber; $i -le $testCount;) {
     $file = $tests[$i-1]
 
     $fileName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
     $testsToRun += "$fileName/*"
-    Write-Host "Added $file"
     $i = $i + $totalAgents 
  }
 
-# join all test files seperated by space.
+# Join all test files into a space-separated string
 $testFiles = $testsToRun -Join " "
-Write-Host "Test files $testFiles"
-# write these files into variable so that we can run them using pytest in subsequent task. 
+Write-Host "Tests to run $testFiles"
+# Write files into a variable for execution in a subsequent task
 Write-Host "##vso[task.setvariable variable=MATLABTestFiles;]$testFiles" 
