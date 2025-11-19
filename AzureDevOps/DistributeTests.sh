@@ -19,7 +19,6 @@ while IFS= read -r file; do
     tests+=("$file")
 done < <(find ./tests -type f -name "*.m" | sort)
 
-# Use Azure DevOps variables
 totalAgents=${SYSTEM_TOTALJOBSINPHASE} # Standard VSTS variable containing the number of parallel jobs
 agentNumber=${SYSTEM_JOBPOSITIONINPHASE} # Current job positioN
 testCount=${#tests[@]}
@@ -37,7 +36,6 @@ echo "Agent number: $agentNumber"
 echo "Total tests: $testCount"
 
 testsToRun=()
-
 # Slice test files so each agent gets a unique set of files
 for (( i=agentNumber; i<=testCount; i+=totalAgents )); do
     file="${tests[i-1]}"

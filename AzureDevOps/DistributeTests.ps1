@@ -27,7 +27,6 @@ Write-Host "Agent number: $agentNumber"
 Write-Host "Total tests: $testCount"
 
 $testsToRun= @()
-
 # Slice test files so each agent gets a unique set of files to execute
 For ($i=$agentNumber; $i -le $testCount;) {
     $file = $tests[$i-1]
