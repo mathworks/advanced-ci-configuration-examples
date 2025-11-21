@@ -13,7 +13,7 @@ jobs:
 
       - task: RunMATLABBuild@1
         inputs:
-          tasks: buildPythonPackage
+          tasks: mex buildPythonPackage
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
