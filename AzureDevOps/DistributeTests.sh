@@ -5,7 +5,7 @@
 #
 #         USAGE:  ./distribute_tests.sh
 #
-#   DESCRIPTION:  This script divides test files among multiple agents for faster execution. It searches for files matching a specific pattern (for example, `test*`) and assigns them based on the agent number.
+#   DESCRIPTION:  This script divides test files across multiple agents for faster execution. It searches for files matching a specific pattern (for example, `test*`) and assigns them based on the agent number.
 #                 For example, if there are multiple files [test1..test10] and 2 agents:
 #                       - Agent 1 runs tests from odd-numbered files.
 #                       - Agent 2 runs tests from even-numbered files.
@@ -20,7 +20,7 @@ while IFS= read -r file; do
 done < <(find ./tests -type f -name "*.m" | sort)
 
 totalAgents=${SYSTEM_TOTALJOBSINPHASE} # Standard VSTS variable containing the number of parallel jobs
-agentNumber=${SYSTEM_JOBPOSITIONINPHASE} # Current job positioN
+agentNumber=${SYSTEM_JOBPOSITIONINPHASE} # Current job position
 testCount=${#tests[@]}
 
 # Handle cases where the pipeline runs without parallel configuration (single agent)

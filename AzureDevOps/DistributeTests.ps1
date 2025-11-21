@@ -2,7 +2,7 @@
 .SYNOPSIS  
     Distribute tests across multiple agents in VSTS pipeline 
 .DESCRIPTION  
-    This script divides test files among multiple agents for faster execution. It searches for files matching a specific pattern (for example, `test*`) and assigns them based on the agent number.
+    This script divides test files across multiple agents for faster execution. It searches for files matching a specific pattern (for example, `test*`) and assigns them based on the agent number.
     For example, if there are multiple files [test1..test10] and 2 agents:
         - Agent 1 runs tests from odd-numbered files.
         - Agent 2 runs tests from even-numbered files.
