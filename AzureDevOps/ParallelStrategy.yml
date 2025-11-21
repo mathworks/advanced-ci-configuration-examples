@@ -1,0 +1,84 @@
+jobs:
+  - job: ParallelWindows
+    # Specify 'parallel' strategy to run tests in parallel
+    strategy:
+      parallel: 2
+    pool:
+      vmImage: windows-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          products: MATLAB_Compiler_SDK MATLAB_Test 
+
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: mex buildPythonPackage
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - powershell: .\AzureDevOps\DistributeTests.ps1
+        displayName: 'PowerShell script to distribute tests'
+      
+      - task: RunMATLABTests@1
+        inputs:
+          selectByName: $(MATLABTestFiles)
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+
+  - job: ParallelLinux
+    # Specify 'parallel' strategy to run tests in parallel
+    strategy:
+      parallel: 2
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          products: MATLAB_Compiler_SDK MATLAB_Test
+
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: mex buildPythonPackage
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+
+      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+        displayName: 'Bash script to distribute tests'
+      
+      - task: RunMATLABTests@1
+        inputs:
+          selectByName: $(MATLABTestFiles)
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
+
+  - job: ParallelMac
+    # Specify 'parallel' strategy to run tests in parallel
+    strategy:
+      parallel: 2
+    pool:
+      vmImage: macOS-latest
+    steps:
+      # Install MATLAB and required products
+      - task: InstallMATLAB@1
+        inputs:
+          products: MATLAB_Compiler_SDK MATLAB_Test
+
+      - task: RunMATLABBuild@1
+        inputs:
+          tasks: mex buildPythonPackage
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+      
+      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+        displayName: 'Bash script to distribute tests'
+      
+      - task: RunMATLABTests@1
+        inputs:
+          selectByName: $(MATLABTestFiles)
+          sourceFolder: src
+        env:
+          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)       
