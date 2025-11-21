@@ -13,7 +13,7 @@ jobs:
 
       - task: RunMATLABBuild@1
         inputs:
-          tasks: equivalenceTest
+          tasks: buildPythonPackage
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
