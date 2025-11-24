@@ -9,7 +9,7 @@
 #                 For example, if there are multiple files [test1..test10] and 2 agents:
 #                       - Agent 1 runs tests from odd-numbered files.
 #                       - Agent 2 runs tests from even-numbered files.
-#                 For detailed slicing information, see https://docs.microsoft.com/en-us/vsts/pipelines/test/parallel-testing-any-test-runner
+#                 For detailed slicing information, see https://learn.microsoft.com/en-us/azure/devops/pipelines/test/parallel-testing-any-test-runner?view=azure-devops
 #
 #===============================================================================
 
