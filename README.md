@@ -14,7 +14,7 @@ For starter workflows, use the [`ci-configuration-examples`](https://github.com/
 
 # Workflows
 
-The repository contains examples for packaging and distributing a toolbox, as well as building and uploading Python<sup>&reg;</sup> packages.
+The repository contains examples for packaging and distributing a toolbox, building and uploading Python<sup>&reg;</sup> packages, and running tests across multiple build agents.
 
 - **Package and Distribute Toolbox**: Using a matrix build across multiple platforms, compile, link, and test your C source files to produce a binary MEX file per operating system. Then, bundle the resulting binaries into a toolbox and distribute it as a GitHub release.
 
@@ -35,6 +35,8 @@ The repository contains examples for packaging and distributing a toolbox, as we
     | CircleCI| [`.circleci/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.circleci/CrossPlatformBuilder.yml) |
     | GitHub Actions| [`.github/workflows/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/CrossPlatformBuilder.yml) |
     | Jenkins | [`Jenkins/CrossPlatformBuilder/Jenkinsfile`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/CrossPlatformBuilder/Jenkinsfile) |
+
+- **Run Tests Across Multiple Agents**: Use the [parallel strategy](https://learn.microsoft.com/en-us/azure/devops/pipelines/test/parallel-testing-any-test-runner?view=azure-devops) in Azure DevOps to run tests across multiple agents and speed up the testing process. For configuration details, see the example in [`AzureDevOps/ParallelStrategy.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ParallelStrategy.yml).
 
 <br>
 
