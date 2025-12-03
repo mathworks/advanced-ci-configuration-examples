@@ -17,7 +17,7 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
-      - powershell: .\AzureDevOps\DistributeTests.ps1
+      - powershell: .\AzureDevOps\ParallelStrategy\DistributeTests.ps1
         displayName: 'PowerShell script to distribute tests'
       
       - task: RunMATLABTests@1
@@ -45,7 +45,7 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
 
-      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+      - bash: chmod +x  ./AzureDevOps/ParallelStrategy/DistributeTests.sh && ./AzureDevOps/ParallelStrategy/DistributeTests.sh 
         displayName: 'Bash script to distribute tests'
       
       - task: RunMATLABTests@1
@@ -73,7 +73,7 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
       
-      - bash: chmod +x  ./AzureDevOps/DistributeTests.sh && ./AzureDevOps/DistributeTests.sh 
+      - bash: chmod +x  ./AzureDevOps/ParallelStrategy/DistributeTests.sh && ./AzureDevOps/ParallelStrategy/DistributeTests.sh 
         displayName: 'Bash script to distribute tests'
       
       - task: RunMATLABTests@1
