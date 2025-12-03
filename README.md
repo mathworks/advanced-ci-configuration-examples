@@ -36,7 +36,7 @@ The repository contains examples for packaging and distributing a toolbox, build
     | GitHub Actions| [`.github/workflows/CrossPlatformBuilder.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/.github/workflows/CrossPlatformBuilder.yml) |
     | Jenkins | [`Jenkins/CrossPlatformBuilder/Jenkinsfile`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/Jenkins/CrossPlatformBuilder/Jenkinsfile) |
 
-- **Run Tests Across Multiple Agents**: Use the [parallel strategy](https://learn.microsoft.com/en-us/azure/devops/pipelines/test/parallel-testing-any-test-runner?view=azure-devops) in Azure DevOps to run tests across multiple agents and speed up the testing process. For configuration details, see the example in [`AzureDevOps/ParallelStrategy.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ParallelStrategy.yml).
+- **Run Tests Across Multiple Agents**: Use the [parallel strategy](https://learn.microsoft.com/en-us/azure/devops/pipelines/test/parallel-testing-any-test-runner?view=azure-devops) in Azure DevOps to run tests across multiple agents and speed up the testing process. For configuration details, see the example in [`AzureDevOps/ParallelStrategy/ParallelStrategy.yml`](https://github.com/mathworks/advanced-ci-configuration-examples/blob/main/AzureDevOps/ParallelStrategy/ParallelStrategy.yml).
 
 <br>
 
