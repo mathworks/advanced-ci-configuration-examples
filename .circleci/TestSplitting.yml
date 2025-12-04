@@ -15,37 +15,32 @@ executors:
     win/default
 
 jobs:
-  build-python-package:
+  split-test:
     parameters:
       os:
         type: executor
-      release:
-        type: string
     executor: << parameters.os >>
     steps:
       - checkout
       
       # Install MATLAB and required products
       - matlab/install:
-          release: << parameters.release >>
           products: >
             MATLAB_Compiler_SDK
             MATLAB_Test
       
-      # Builds Python package from MATLAB function and verifies functionality through equivalence tests
+      # Builds Python package from MATLAB function
       - matlab/run-build:
-          tasks: equivalenceTest
+          tasks: mex buildPythonPackage
       
-      # Stores the built Python package as an artifact
-      - store_artifacts:
-          path: KgToPoundsPythonBuild
+      - - matlab/run-tests:
+          select-by-name: $(circleci tests glob "tests/**/*.m" | circleci tests split | awk -F'[\\\\/.]' '{print $(NF-1) "/*"}')
 
 workflows:
-  cross-platform-build:
+  test-splitting-build:
     jobs:
-      # A job will run for all combinations of OS and release present in the matrix
-      - build-python-package:
+      # A job will run for each OS present in the matrix
+      - split-test:
           matrix:
             parameters:
               os: [linux, macos, windows]
-              release: ["R2025a", "R2025b"]
