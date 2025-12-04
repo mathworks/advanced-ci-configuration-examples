@@ -1,3 +1,16 @@
+trigger:
+  branches:
+    include:
+      - main
+  tags:
+    include:
+      - 'v*'
+
+pr:
+  branches:
+    include:
+      - main
+
 jobs:
   # This job compiles MEX files and runs tests across different platforms
   - job: CompileAndTestMex
@@ -62,10 +75,11 @@ jobs:
       
       # The packaged toolbox is distributed as a GitHub release
       - task: GitHubRelease@1
+        condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
         inputs:
           gitHubConnection: advanced-ci-configuration-examples
           title: "Cross-Platform Array Product Toolbox"
           assets: 'toolbox.mltbx'
           tagSource: 'userSpecifiedTag'
-          tag: '$(Build.BuildNumber)'
+          tag: 'azure-$(Build.SourceBranchName)'
     dependsOn: CompileAndTestMex
