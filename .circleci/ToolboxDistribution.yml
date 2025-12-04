@@ -25,7 +25,8 @@ jobs:
     steps:
       - checkout
       
-      - matlab/install
+      - matlab/install:
+          cache: true
       
       # Runs build to create MEX file and then run tests
       - matlab/run-build:
@@ -48,7 +49,8 @@ jobs:
     steps:
       - checkout
       
-      - matlab/install
+      - matlab/install:
+          cache: true
       
       # Downloads all mex files from previous job
       - attach_workspace:
