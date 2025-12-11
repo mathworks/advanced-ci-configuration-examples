@@ -3,6 +3,8 @@ name: Compile, Test and Release toolbox
 on:
   push:
     branches: [ main ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ main ]
 
@@ -77,7 +79,8 @@ jobs:
 
       # The packaged toolbox is distributed as a GitHub release
       - name: Create release and upload asset
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          gh release create ${{github.run_id}} --title "Cross-Platform Array Product Toolbox" toolbox.mltbx
+          gh release create gh-${{github.ref_name}} --title "Cross-Platform Array Product Toolbox" toolbox.mltbx
         env:
           GH_TOKEN: ${{ github.token }}
