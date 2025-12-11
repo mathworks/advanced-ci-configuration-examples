@@ -16,7 +16,7 @@ pipeline {
                         agent { label "${OS}" }
                         
                         tools {
-                            matlab 'R2025a'
+                            matlab 'R2025b'
                         }
                         
                         steps {
@@ -44,7 +44,7 @@ pipeline {
             }
             
             tools {
-                matlab 'R2025a'
+                matlab 'R2025b'
             }
             
             steps {
