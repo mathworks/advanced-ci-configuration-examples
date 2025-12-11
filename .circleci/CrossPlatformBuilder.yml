@@ -10,7 +10,7 @@ executors:
       image: default
   macos:
     macos:
-      xcode: 15.4.0
+      xcode: 16.4.0
   windows:
     win/default
 
