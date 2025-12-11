@@ -15,7 +15,7 @@ executors:
     win/default
 
 jobs:
-  split-test:
+  split-and-run-test:
     parameters:
       os:
         type: executor
@@ -43,7 +43,7 @@ workflows:
   test-splitting-build:
     jobs:
       # A job will run for each OS present in the matrix
-      - split-test:
+      - split-and-run-test:
           matrix:
             parameters:
               os: [linux, macos, windows]
