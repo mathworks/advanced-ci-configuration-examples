@@ -3,7 +3,7 @@ orbs:
   matlab: mathworks/matlab@1
   win: circleci/windows@5
 
-# Define the execution environments for different operating systems
+# Define the execution environments for different platforms
 executors:
   linux:
     machine:
@@ -25,13 +25,13 @@ jobs:
     steps:
       - checkout
       
-      # Install MATLAB and required products
+      # Install MATLAB and the required products
       - matlab/install:
           products: >
             MATLAB_Compiler_SDK
             MATLAB_Test
-      
-      # Builds mex file and Python package from MATLAB function
+
+      # Build MEX file and Python package from MATLAB function
       - matlab/run-build:
           tasks: mex buildPythonPackage
       
@@ -46,7 +46,7 @@ jobs:
 workflows:
   test-splitting-build:
     jobs:
-      # A job will run for each OS present in the matrix
+      # A job will run for each platform in the matrix
       - split-and-run-test:
           matrix:
             parameters:

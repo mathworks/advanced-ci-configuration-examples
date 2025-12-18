@@ -6,21 +6,21 @@ jobs:
         linux-R2025a:
           imageName: ubuntu-latest
           release: R2025a
-        linux-R2025b:
+        linux-with-latest:
           imageName: ubuntu-latest
-          release: R2025b
+          release: latest
         mac-R2025a:
           imageName: macOS-latest
           release: R2025a
-        mac-R2025b:
+        mac-with-latest:
           imageName: macOS-latest
-          release: R2025b
+          release: latest
         windows-R2025a:
           imageName: windows-latest
           release: R2025a 
-        windows-R2025b:
+        windows-with-latest:
           imageName: windows-latest
-          release: R2025b
+          release: latest
     pool:
       vmImage: $(imageName)
     steps:

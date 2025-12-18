@@ -48,4 +48,4 @@ workflows:
           matrix:
             parameters:
               os: [linux, macos, windows]
-              release: ["R2025a", "R2025b"]
+              release: ["R2025a", "latest"]
