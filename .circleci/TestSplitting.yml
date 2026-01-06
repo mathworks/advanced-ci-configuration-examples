@@ -1,0 +1,53 @@
+version: 2.1
+orbs:
+  matlab: mathworks/matlab@1
+  win: circleci/windows@5
+
+# Define the execution environments for different platforms
+executors:
+  linux:
+    machine:
+      image: default
+  macos:
+    macos:
+      xcode: 16.4.0
+  windows:
+    win/default
+
+jobs:
+  split-and-run-test:
+    parameters:
+      os:
+        type: executor
+    executor: << parameters.os >>
+    # Use parallelism to split tests across multiple containers
+    parallelism: 2
+    steps:
+      - checkout
+      
+      # Install MATLAB and the required products
+      - matlab/install:
+          products: >
+            MATLAB_Compiler_SDK
+            MATLAB_Test
+
+      # Build MEX file and Python package from MATLAB function
+      - matlab/run-build:
+          tasks: mex buildPythonPackage
+      
+      # Run MATLAB tests, splitting them by timing across parallel containers
+      - matlab/run-tests:
+          test-results-junit: test-results/results.xml
+          select-by-name: $(circleci tests glob "tests/**/*.m" | awk -F'[\\\\/.]' '{print $(NF-1)}' | circleci tests split --split-by=timings --timings-type=classname | awk '{print $0 "/*"}')
+
+      - store_test_results:
+          path: test-results/results.xml
+
+workflows:
+  test-splitting-build:
+    jobs:
+      # A job will run for each platform in the matrix
+      - split-and-run-test:
+          matrix:
+            parameters:
+              os: [linux, macos, windows]
