@@ -22,29 +22,29 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       
       # Sets up MATLAB on the GitHub Actions runner
       - name: Setup MATLAB
-        uses: matlab-actions/setup-matlab@v2
+        uses: matlab-actions/setup-matlab@v3
         with:
           cache: true
 
       # Runs build to create MEX file and then run tests
       - name: Run MATLAB build
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
         with:
           tasks: test
 
       # Uploads the test results and MEX files to GitHub
       - name: Upload test results          
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-results-${{ matrix.os }}
           path: test-results/results.xml
 
       - name: Upload mex file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mex-${{ matrix.os }}
           path: toolbox/**/*.mex*
@@ -55,17 +55,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
 
       # Sets up MATLAB on the GitHub Actions runner
       - name: Setup MATLAB
-        uses: matlab-actions/setup-matlab@v2
+        uses: matlab-actions/setup-matlab@v3
         with:
           cache: true
 
       # Downloads all mex files uploaded to GitHub in the previous job
       - name: Download mex files
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with: 
           path: toolbox    
           pattern: mex-*
@@ -73,7 +73,7 @@ jobs:
         
       # Packages all files in toolbox folder into a mltbx toolbox package  
       - name: Run MATLAB build
-        uses: matlab-actions/run-build@v2
+        uses: matlab-actions/run-build@v3
         with:
           tasks: packageToolbox
 
