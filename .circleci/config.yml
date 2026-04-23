@@ -1,0 +1,39 @@
+version: 2.1
+setup: true
+orbs:
+  continuation: circleci/continuation@1
+
+parameters:
+  workflow:
+    type: enum
+    default: cross-platform-builder
+    enum: [cross-platform-builder, test-splitting, toolbox-distribution]
+
+jobs:
+  select-config:
+    executor: continuation/default
+    steps:
+      - checkout
+      - when:
+          condition:
+            equal: [cross-platform-builder, << pipeline.parameters.workflow >>]
+          steps:
+            - continuation/continue:
+                configuration_path: .circleci/CrossPlatformBuilder.yml
+      - when:
+          condition:
+            equal: [test-splitting, << pipeline.parameters.workflow >>]
+          steps:
+            - continuation/continue:
+                configuration_path: .circleci/TestSplitting.yml
+      - when:
+          condition:
+            equal: [toolbox-distribution, << pipeline.parameters.workflow >>]
+          steps:
+            - continuation/continue:
+                configuration_path: .circleci/ToolboxDistribution.yml
+
+workflows:
+  setup:
+    jobs:
+      - select-config
