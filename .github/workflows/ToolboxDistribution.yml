@@ -28,7 +28,7 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v3
         with:
-          release: latest-including-prerelease
+          release: R2026b
           cache: true
 
       # Runs build to create MEX file and then run tests
@@ -62,7 +62,7 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v3
         with:
-          release: latest-including-prerelease
+          release: R2026b
           cache: true
 
       # Downloads all mex files uploaded to GitHub in the previous job

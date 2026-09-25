@@ -16,7 +16,7 @@ jobs:
       # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
-          release: latest-including-prerelease
+          release: R2026b
           products: MATLAB_Compiler_SDK MATLAB_Test
       
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests

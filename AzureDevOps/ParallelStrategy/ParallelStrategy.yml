@@ -10,7 +10,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           products: MATLAB_Compiler_SDK MATLAB_Test 
-          release: latest-including-prerelease
+          release: R2026b
 
       - task: RunMATLABBuild@1
         inputs:
@@ -38,7 +38,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           products: MATLAB_Compiler_SDK MATLAB_Test
-          release: latest-including-prerelease
+          release: R2026b
 
       - task: RunMATLABBuild@1
         inputs:

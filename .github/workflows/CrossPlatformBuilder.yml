@@ -31,7 +31,7 @@ jobs:
       - name: Setup MATLAB
         uses: matlab-actions/setup-matlab@v3
         with:
-          release: latest-including-prerelease
+          release: R2026b
           products: >
             MATLAB_Compiler_SDK
             MATLAB_Test

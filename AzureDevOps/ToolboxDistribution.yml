@@ -28,7 +28,7 @@ jobs:
     steps:
       - task: InstallMATLAB@1
         inputs:
-          release: latest-including-prerelease
+          release: R2026b
       
       # Runs build to create MEX file and then run tests
       - task: RunMATLABBuild@1
@@ -57,7 +57,7 @@ jobs:
     steps:
       - task: InstallMATLAB@1
         inputs:
-          release: latest-including-prerelease
+          release: R2026b
       
       # Downloads all mex files from previous job
       - task: DownloadPipelineArtifact@2
