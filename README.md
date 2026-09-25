@@ -1,4 +1,4 @@
-# Advanced Continuous Integration (CI) Configuration Examples for MATLAB
+# Advanced Continuous Integration (CI) Configuration Examples for MATLAB 
 
 This repository includes examples of advanced workflows in MATLAB<sup>&reg;</sup> for common CI platforms. For example, you can use matrix-build templates to package and distribute toolboxes across operating systems or build and deploy standalone applications for multiple MATLAB releases. The repository includes all the required source code, tests, and configuration files for each workflow and CI platform.
 
