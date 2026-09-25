@@ -10,6 +10,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           products: MATLAB_Compiler_SDK MATLAB_Test 
+          release: R2026b
 
       - task: RunMATLABBuild@1
         inputs:
@@ -37,6 +38,7 @@ jobs:
       - task: InstallMATLAB@1
         inputs:
           products: MATLAB_Compiler_SDK MATLAB_Test
+          release: R2026b
 
       - task: RunMATLABBuild@1
         inputs:
@@ -53,29 +55,30 @@ jobs:
         env:
           MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)    
 
-  - job: ParallelMac
-    # Specify 'parallel' strategy to run tests in parallel
-    strategy:
-      parallel: 2
-    pool:
-      vmImage: macOS-latest
-    steps:
-      # Install MATLAB and required products
-      - task: InstallMATLAB@1
-        inputs:
-          products: MATLAB_Compiler_SDK MATLAB_Test
+  # Disabled until Azure DevOps supports Apple Silicon runners
+  # - job: ParallelMac
+  #   # Specify 'parallel' strategy to run tests in parallel
+  #   strategy:
+  #     parallel: 2
+  #   pool:
+  #     vmImage: macOS-latest
+  #   steps:
+  #     # Install MATLAB and required products
+  #     - task: InstallMATLAB@1
+  #       inputs:
+  #         products: MATLAB_Compiler_SDK MATLAB_Test
 
-      - task: RunMATLABBuild@1
-        inputs:
-          tasks: mex buildPythonPackage
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
-      
-      - bash: chmod +x  ./AzureDevOps/ParallelStrategy/DistributeTests.sh && ./AzureDevOps/ParallelStrategy/DistributeTests.sh 
-        displayName: 'Bash script to distribute tests'
-      
-      - task: RunMATLABTests@1
-        inputs:
-          selectByName: $(MATLABTestFiles)
-        env:
-          MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)       
+  #     - task: RunMATLABBuild@1
+  #       inputs:
+  #         tasks: mex buildPythonPackage
+  #       env:
+  #         MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)
+  #     
+  #     - bash: chmod +x  ./AzureDevOps/ParallelStrategy/DistributeTests.sh && ./AzureDevOps/ParallelStrategy/DistributeTests.sh 
+  #       displayName: 'Bash script to distribute tests'
+  #     
+  #     - task: RunMATLABTests@1
+  #       inputs:
+  #         selectByName: $(MATLABTestFiles)
+  #       env:
+  #         MLM_LICENSE_TOKEN: $(MLM_LICENSE_TOKEN)       

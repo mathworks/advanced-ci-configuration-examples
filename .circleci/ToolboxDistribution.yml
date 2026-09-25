@@ -26,6 +26,7 @@ jobs:
       - checkout
       
       - matlab/install:
+          release: R2026b
           cache: true
       
       # Runs build to create MEX file and then run tests
@@ -50,6 +51,7 @@ jobs:
       - checkout
       
       - matlab/install:
+          release: latest-including-prerelease
           cache: true
       
       # Downloads all mex files from previous job
@@ -58,7 +60,7 @@ jobs:
       
       # Packages all files in toolbox folder into a mltbx toolbox package
       - matlab/run-build:
-          tasks: packageToolbox
+          tasks: package
       
       # The packaged toolbox is distributed as a GitHub release
       - gh/install

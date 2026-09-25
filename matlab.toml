@@ -1,0 +1,22 @@
+name = "advanced-ci-configuration-examples"
+
+[folders]
+path = [
+    "src",
+    "toolbox",
+    "toolbox/doc",
+]
+test = [
+    "tests",
+]
+
+[[package]]
+name = "ArrayProduct"
+display-name = "Array Product"
+version = "2.3.13"
+id = "c246659b-9d67-469d-b977-05d478badf7d"
+package-root = "toolbox"
+getting-started-file = "toolbox/doc/GettingStarted.m"
+output-file-name = "arrayProduct.mltbx"
+output-folder = "release"
+
