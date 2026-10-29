@@ -19,15 +19,13 @@ jobs:
     parameters:
       os:
         type: executor
-      release:
-        type: string
     executor: << parameters.os >>
     steps:
       - checkout
       
       # Install MATLAB and required products
       - matlab/install:
-          release: << parameters.release >>
+          release: R2026b
           products: >
             MATLAB_Compiler_SDK
             MATLAB_Test
@@ -48,4 +46,3 @@ workflows:
           matrix:
             parameters:
               os: [linux, macos, windows]
-              release: ["R2025a", "latest"]

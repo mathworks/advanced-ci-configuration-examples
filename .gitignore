@@ -32,4 +32,9 @@ codegen/
 # Cloud based storage dotfile
 .MATLABDriveTag
 
+# Build tool output folders
 .buildtool/
+test-results/
+release/
+KgToPoundsPythonBuild/
+pythonBuild.mat

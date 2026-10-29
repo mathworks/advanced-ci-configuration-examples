@@ -3,31 +3,20 @@ jobs:
     # Matrix strategy to run builds across different OS and MATLAB release combinations
     strategy:
       matrix:
-        linux-R2025a:
+        linux:
           imageName: ubuntu-latest
-          release: R2025a
-        linux-with-latest:
-          imageName: ubuntu-latest
-          release: latest
-        mac-R2025a:
-          imageName: macOS-latest
-          release: R2025a
-        mac-with-latest:
-          imageName: macOS-latest
-          release: latest
-        windows-R2025a:
+        # Disabled until Azure DevOps supports Apple Silicon runners
+        # mac:
+        #   imageName: macOS-latest
+        windows:
           imageName: windows-latest
-          release: R2025a 
-        windows-with-latest:
-          imageName: windows-latest
-          release: latest
     pool:
       vmImage: $(imageName)
     steps:
       # Install MATLAB and required products
       - task: InstallMATLAB@1
         inputs:
-          release: $(release)
+          release: R2026b
           products: MATLAB_Compiler_SDK MATLAB_Test
       
       # Builds Python package from MATLAB function and verifies functionality through equivalence tests
@@ -41,5 +30,5 @@ jobs:
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: KgToPoundsPythonBuild
-          ArtifactName: KgToPounds-$(release)-$(imageName)
+          ArtifactName: KgToPounds-$(imageName)
           publishLocation: Container
